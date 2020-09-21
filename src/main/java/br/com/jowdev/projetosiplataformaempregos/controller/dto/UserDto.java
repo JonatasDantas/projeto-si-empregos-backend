@@ -1,5 +1,9 @@
 package br.com.jowdev.projetosiplataformaempregos.controller.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
 
 import br.com.jowdev.projetosiplataformaempregos.models.User;
@@ -12,6 +16,7 @@ public class UserDto {
 	private String cpf;
 	private String phone;
 	private boolean emailVerified;
+	private List<RoleDto> roles;
 
 	public UserDto(User user) {
 		this.id = user.getId();
@@ -20,6 +25,8 @@ public class UserDto {
 		this.cpf = user.getCpf();
 		this.phone = user.getPhone();
 		this.emailVerified = user.isEmailVerified();
+		this.roles = new ArrayList<>();
+		this.roles.addAll(user.getRoles().stream().map(RoleDto::new).collect(Collectors.toList()));
 	}
 
 	public Long getId() {
@@ -40,6 +47,10 @@ public class UserDto {
 
 	public String getPhone() {
 		return phone;
+	}
+
+	public List<RoleDto> getRoles() {
+		return roles;
 	}
 
 	public boolean isEmailVerified() {

@@ -40,9 +40,9 @@ public class SignupForm {
 	@NotNull
 	@NotEmpty
 	private String phone;
-	
+
 	@NotNull
-	private boolean isRecruiter;
+	private boolean recruiter;
 
 	public String getFirstName() {
 		return firstName;
@@ -99,19 +99,19 @@ public class SignupForm {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
+
 	public boolean isRecruiter() {
-		return isRecruiter;
+		return recruiter;
 	}
 
-	public void setRecruiter(boolean isRecruter) {
-		this.isRecruiter = isRecruter;
+	public void setRecruiter(boolean recruiter) {
+		this.recruiter = recruiter;
 	}
 
 	public User convert(RoleRepository roleRepository) {
 		List<Role> roles;
 
-		if (isRecruiter) {
+		if (isRecruiter()) {
 			roles = roleRepository.findByName("ROLE_RECRUITER");
 		} else {
 			roles = roleRepository.findByName("ROLE_USER");			

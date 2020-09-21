@@ -145,6 +145,10 @@ public class User implements UserDetails {
 		return this.email;
 	}
 
+	public List<Role> getRoles() {
+		return roles;
+	}
+
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
