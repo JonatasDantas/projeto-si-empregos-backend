@@ -17,7 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.jowdev.projetosiplataformaempregos.config.security.TokenService;
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.TokenDto;
-import br.com.jowdev.projetosiplataformaempregos.controller.dto.UserDto;
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.UserDetailsDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.form.LoginForm;
 import br.com.jowdev.projetosiplataformaempregos.controller.form.SignupForm;
 import br.com.jowdev.projetosiplataformaempregos.models.User;
@@ -70,6 +70,6 @@ public class AuthController {
 		userRepository.save(user);
 		
 		URI uri = uriBuilder.path("/users/{id}").buildAndExpand(user.getId()).toUri();
-		return ResponseEntity.created(uri).body(new UserDto(user));
+		return ResponseEntity.created(uri).body(new UserDetailsDto(user));
 	}
 }
