@@ -6,7 +6,7 @@ node {
     }
     stage('Build') {
       
-        def version = sh("cat pom.xml | grep \"<version>.*</version>\" | head -1 |awk -F'[><]' '{print $3}'")
+        def version = sh 'cat pom.xml | grep "<version>.*</version>" | head -1 |awk -F"[><]" "{print $3}"'
 
         app = docker.build("kakaique2000/backend-emprego:" + version)
     }
