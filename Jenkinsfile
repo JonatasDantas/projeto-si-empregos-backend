@@ -14,15 +14,14 @@ node {
         app.push()
         app.push('latest')
     }
-    stage('Publish (production)') {
-      
+    stage('Publish (production)') {      
          try {
-            sh 'docker-compose stop backend-emprego'
+            sh 'docker stop backend-emprego'
             sh 'docker rm backend-emprego'
         } catch(Exception ex) {
          println("nao foi possivel parar o container backend-emprego: " + ex)
         }
         sh 'docker image prune -f'
-        sh 'docker-compose up backend-emprego'
+        sh 'docker run -d -p 8080:8080 --name backend-emprego kakaique2000/backend-emprego:latest'
     }
 }
