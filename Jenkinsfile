@@ -7,8 +7,8 @@ node {
     stage('Build') {
       
         def pomModel = readMavenPom file: 'pom.xml'
-        printLn(pomModel.getModelVersion())
-        printLn(pomModel)
+        println(pomModel.getModelVersion())
+        println(pomModel)
         app = docker.build("kakaique2000/backend-emprego:" + pomModel.getModelVersion())
     }
     stage('Publish (docker hub)') {
