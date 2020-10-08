@@ -6,9 +6,10 @@ node {
     }
     stage('Build') {
       
-        def version = sh 'cat pom.xml | grep "<version>.*</version>" | head -1 |awk -F"[><]" "{print $3}"'
-
-        app = docker.build("kakaique2000/backend-emprego:" + version)
+        def pomModel = readMavenPom file: 'POM.xml'
+        printLn(pomModel.getModelVersion())
+        printLn(pomModel)
+        app = docker.build("kakaique2000/backend-emprego:" + pomModel.getModelVersion())
     }
     stage('Publish (docker hub)') {
         app.push()
