@@ -7,13 +7,13 @@ node {
     stage('Build') {
       
         def pomModel = readMavenPom file: 'pom.xml'
-        println(pomModel.getModelVersion())
-        println(pomModel)
-        app = docker.build("kakaique2000/backend-emprego:" + pomModel.getModelVersion())
+        println("===================== Versão do Maven: " pomModel.getVersion() + "=====================")
+        app = docker.build("kakaique2000/backend-emprego:" + pomModel.getVersion())
     }
     stage('Publish (docker hub)') {
         app.push()
         app.push('latest')
+        println("===================== Imagem enviada ao dockerhub: https://hub.docker.com/repository/docker/kakaique2000/backend-emprego =====================")
     }
     stage('Publish (production)') {      
          try {
@@ -23,6 +23,8 @@ node {
          println("nao foi possivel parar o container backend-emprego: " + ex)
         }
         sh 'docker image prune -f'
+        
+        println("===================== Executando imagem: kakaique2000/backend-emprego:" pomModel.getVersion()  + "=====================")
         sh 'docker run -d -p 8080:8080 --name backend-emprego kakaique2000/backend-emprego:latest'
     }
 }
