@@ -7,7 +7,7 @@ node {
     stage('Build') {
       
         def pomModel = readMavenPom file: 'pom.xml'
-        println("===================== Versão do Maven: " pomModel.getVersion() + "=====================")
+        println("===================== Versão do Maven: " + pomModel.getVersion() + "=====================")
         app = docker.build("kakaique2000/backend-emprego:" + pomModel.getVersion())
     }
     stage('Publish (docker hub)') {
@@ -24,7 +24,7 @@ node {
         }
         sh 'docker image prune -f'
         
-        println("===================== Executando imagem: kakaique2000/backend-emprego:" pomModel.getVersion()  + "=====================")
+        println("===================== Executando imagem: kakaique2000/backend-emprego:" + pomModel.getVersion()  + "=====================")
         sh 'docker run -d -p 8080:8080 --name backend-emprego kakaique2000/backend-emprego:latest'
     }
 }
