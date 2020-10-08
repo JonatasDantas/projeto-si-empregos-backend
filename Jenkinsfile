@@ -1,12 +1,13 @@
 // Feito pelo Kaiquinho o mais vitorioso da cidade
 node {
     def app
+    def pomModel
     stage('Checkout') {
         checkout scm
     }
     stage('Build') {
       
-        def pomModel = readMavenPom file: 'pom.xml'
+        pomModel = readMavenPom file: 'pom.xml'
         println("===================== Versão do Maven: " + pomModel.getVersion() + "=====================")
         app = docker.build("kakaique2000/backend-emprego:" + pomModel.getVersion())
     }
