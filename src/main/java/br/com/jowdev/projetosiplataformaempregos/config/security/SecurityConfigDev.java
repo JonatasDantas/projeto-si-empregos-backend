@@ -53,6 +53,7 @@ public class SecurityConfigDev extends WebSecurityConfigurerAdapter {
 			.antMatchers("/auth/**").permitAll()
 			.antMatchers("/h2-console/**").permitAll()
 			.antMatchers("/").permitAll()
+			.antMatchers("/qualifications/**").permitAll()
 			.anyRequest().authenticated()
 			.and().headers().frameOptions().disable()
 			.and().csrf().disable()

@@ -26,7 +26,7 @@ public class TokenService {
 		Date expirationDate = new Date(today.getTime() + Long.parseLong(this.expiration));
 		
 		return Jwts.builder()
-				.setIssuer("Tulipa Store Ecommerce API")
+				.setIssuer("Si Bicos online")
 				.setSubject(logged.getId().toString())
 				.setIssuedAt(today)
 				.setExpiration(expirationDate)

@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.transaction.Transactional;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -147,6 +148,11 @@ public class User implements UserDetails {
 
 	public List<Role> getRoles() {
 		return roles;
+	}
+	
+	@Transactional
+	public void setRoles(List<Role> roles) { 
+		this.roles = roles;
 	}
 
 	@Override
