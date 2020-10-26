@@ -109,7 +109,7 @@ public class AuthController {
 			message.setTo(email);
 			message.setSubject("Troca de senha - Plataforma Empregos");
 			
-			String url = "http://localhost/reset-password?token=" + entity.getToken();
+			String url = "http://localhost:4200/reset-password?token=" + entity.getToken();
 
 			message.setText("Olá " + user.get().getName() + ", \n\n" +
 					"Você requisitou uma troca de senha. Clique no link abaixo para reseta-lá. \n" +
