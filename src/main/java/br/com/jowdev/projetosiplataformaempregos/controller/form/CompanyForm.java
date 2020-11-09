@@ -21,10 +21,6 @@ public class CompanyForm {
 
 	@NotNull
 	@NotEmpty
-	private String phone;
-
-	@NotNull
-	@NotEmpty
 	private String street;
 
 	@NotNull
@@ -58,14 +54,6 @@ public class CompanyForm {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
 	}
 
 	public String getStreet() {
@@ -115,14 +103,14 @@ public class CompanyForm {
 	public void setState(String state) {
 		this.state = state;
 	}
-	
+
 	public Company convert(Long userId, UserRepository userRepository) {
 		Optional<User> user = userRepository.findById(userId);
 
 		if (user.isPresent()) {
-			return new Company(cnpj, name, phone, street, number, complement, cep, city, state, user.get());
+			return new Company(cnpj, name, street, number, complement, cep, city, state, user.get());
 		}
-		
+
 		return null;
 	}
 }
