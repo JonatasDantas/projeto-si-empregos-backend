@@ -1,10 +1,16 @@
 package br.com.jowdev.projetosiplataformaempregos.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Company {
@@ -15,7 +21,6 @@ public class Company {
 
 	private String cnpj;
 	private String name;
-	private String phone;
 	private String street;
 	private Integer number;
 	private String complement;
@@ -23,15 +28,17 @@ public class Company {
 	private String city;
 	private String state;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private User user;
+	
+	@OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE)
+	private List<Job> jobs = new ArrayList<>();
 
-	public Company(String cnpj, String name, String phone, String street, Integer number, String complement, String cep,
+	public Company(String cnpj, String name, String street, Integer number, String complement, String cep,
 			String city, String state, User user) {
 		super();
 		this.cnpj = cnpj;
 		this.name = name;
-		this.phone = phone;
 		this.street = street;
 		this.number = number;
 		this.complement = complement;
@@ -67,14 +74,6 @@ public class Company {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
 	}
 
 	public String getStreet() {

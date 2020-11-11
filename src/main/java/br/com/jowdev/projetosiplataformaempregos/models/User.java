@@ -43,7 +43,7 @@ public class User implements UserDetails {
 	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private List<Role> roles = new ArrayList<>();
 	
-	@OneToMany
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<Company> companies = new ArrayList<>();
 
 	public User() {
@@ -51,7 +51,7 @@ public class User implements UserDetails {
 	}
 
 	public User(String name, String email, String password, UserGender gender, String cpf,
-			String phone, boolean emailVerified, List<Role> roles) {
+			String phone, boolean emailVerified, List<Role> roles, List<Company> companies) {
 		super();
 		this.name = name;
 		this.email = email;
@@ -61,6 +61,7 @@ public class User implements UserDetails {
 		this.phone = phone;
 		this.emailVerified = emailVerified;
 		this.roles = roles;
+		this.companies = companies;
 	}
 
 	@Override

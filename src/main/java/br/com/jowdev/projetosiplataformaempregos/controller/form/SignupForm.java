@@ -1,5 +1,6 @@
 package br.com.jowdev.projetosiplataformaempregos.controller.form;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.Email;
@@ -120,6 +121,6 @@ public class SignupForm {
 		String name = firstName.trim() + " " + lastName.trim();
 		String hashedPassword = new BCryptPasswordEncoder().encode(password);
 		
-		return new User(name, email, hashedPassword, gender, cpf, phone, false, roles);
+		return new User(name, email, hashedPassword, gender, cpf, phone, false, roles, new ArrayList<>());
 	}
 }

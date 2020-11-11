@@ -1,0 +1,10 @@
+package br.com.jowdev.projetosiplataformaempregos.repository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import br.com.jowdev.projetosiplataformaempregos.models.Job;
+
+public interface JobRepositoryCustom {
+	Page<Job> getJobsByFilter(String occupation, String salary, Pageable pageable);
+}

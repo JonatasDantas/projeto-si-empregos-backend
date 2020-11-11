@@ -1,5 +1,6 @@
 package br.com.jowdev.projetosiplataformaempregos.controller;
 
+import java.net.URI;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -15,15 +16,21 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.CompanyDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.UserDetailsDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.UserDto;
+import br.com.jowdev.projetosiplataformaempregos.controller.form.CompanyForm;
 import br.com.jowdev.projetosiplataformaempregos.controller.form.UserUpdateForm;
+import br.com.jowdev.projetosiplataformaempregos.models.Company;
 import br.com.jowdev.projetosiplataformaempregos.models.User;
+import br.com.jowdev.projetosiplataformaempregos.repository.CompanyRepository;
 import br.com.jowdev.projetosiplataformaempregos.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -35,6 +42,9 @@ public class UserController {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private CompanyRepository companyRepository;
 
 	@GetMapping
 	@PreAuthorize("hasRole('ADMIN')")
@@ -68,5 +78,25 @@ public class UserController {
 		}
 		
 		return ResponseEntity.notFound().build();
+	}
+
+	@PreAuthorize("hasAnyRole('RECRUITER', 'ADMIN') and #authUser.getId() == #userId")
+	@PostMapping("/{userId}/companies")
+	@Transactional
+	public ResponseEntity<CompanyDto> createCompany(@PathVariable Long userId, @RequestBody @Valid CompanyForm form,
+			UriComponentsBuilder uriBuilder, @AuthenticationPrincipal User authUser) {
+		Company company = form.convert(userId, userRepository);
+		companyRepository.save(company);
+		
+		URI uri = uriBuilder.path("/users/" + userId + "/companies/{id}").buildAndExpand(company.getId()).toUri();
+		return ResponseEntity.created(uri).body(new CompanyDto(company));
+	}
+	
+	@PreAuthorize("hasRole('ADMIN') or #authUser.getId() == #userId")
+	@GetMapping("/{userId}/companies")
+	public Page<CompanyDto> getUserCompanies(@PathVariable Long userId, @PageableDefault(sort = "id", direction = Direction.ASC) Pageable page,
+			@AuthenticationPrincipal User authUser) {
+		Page<Company> companies = companyRepository.findByUserId(page, userId);
+		return CompanyDto.convert(companies);
 	}
 }
