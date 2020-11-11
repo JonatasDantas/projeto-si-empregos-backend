@@ -36,7 +36,7 @@ import br.com.jowdev.projetosiplataformaempregos.models.User;
 import br.com.jowdev.projetosiplataformaempregos.repository.PasswordResetTokenRepository;
 import br.com.jowdev.projetosiplataformaempregos.repository.RoleRepository;
 import br.com.jowdev.projetosiplataformaempregos.repository.UserRepository;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.Parameter;
 
 @RestController
 @RequestMapping("/auth")
@@ -99,7 +99,7 @@ public class AuthController {
 	}
 	
 	@PostMapping("/reset-password")
-	public ResponseEntity<?> resetPassword(@RequestParam("email") String email) {
+	public ResponseEntity<?> resetPassword(@RequestParam("email") String email, @Parameter(hidden = true) UriComponentsBuilder uriBuilder) {
 		Optional<User> user = userRepository.findByEmail(email);
 		
 		if (user.isPresent()) {
@@ -113,11 +113,11 @@ public class AuthController {
 			message.setTo(email);
 			message.setSubject("Troca de senha - Plataforma Empregos");
 			
-			String url = "http://localhost:4200/reset-password?token=" + entity.getToken();
+			URI uri = uriBuilder.path("/reset-password?token={token}").buildAndExpand(entity.getToken()).toUri();
 
 			message.setText("Olá " + user.get().getName() + ", \n\n" +
 					"Você requisitou uma troca de senha. Clique no link abaixo para reseta-lá. \n" +
-					url + " \n\n Obrigado.");
+					uri.toString() + " \n\n Obrigado.");
 			
 			emailSender.send(message);
 			
