@@ -25,24 +25,27 @@ import br.com.jowdev.projetosiplataformaempregos.controller.dto.UserDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.form.UserUpdateForm;
 import br.com.jowdev.projetosiplataformaempregos.models.User;
 import br.com.jowdev.projetosiplataformaempregos.repository.UserRepository;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
+@SecurityRequirement(name = "Bearer Token")
 @RequestMapping("/users")
 public class UserController {
 
 	@Autowired
 	private UserRepository userRepository;
 
-	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping
-	public Page<UserDto> findAll(@PageableDefault(sort = "id", direction = Direction.ASC) Pageable page) {
+	@PreAuthorize("hasRole('ADMIN')")
+	public Page<UserDto> findAll(@PageableDefault(sort = "id", direction = Direction.ASC) @Parameter(hidden = true) Pageable page) {
 		Page<User> users = userRepository.findAll(page);
 		return UserDto.convert(users);
 	}
 
 	@PreAuthorize("hasRole('ADMIN') or #authUser.getId() == #id")
 	@GetMapping("/{id}")
-	public ResponseEntity<UserDetailsDto> details(@PathVariable Long id, @AuthenticationPrincipal User authUser) {
+	public ResponseEntity<UserDetailsDto> details(@PathVariable Long id, @AuthenticationPrincipal @Parameter(hidden = true) User authUser) {
 		Optional<User> optional = userRepository.findById(id);
 
 		if (optional.isPresent()) {
@@ -55,7 +58,7 @@ public class UserController {
 	@PreAuthorize("hasRole('ADMIN') or #authUser.getId() == #id")
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<UserDetailsDto> updateUser(@PathVariable Long id, @RequestBody @Valid UserUpdateForm form,
+	public ResponseEntity<UserDetailsDto> updateUser(@PathVariable Long id, @RequestBody @Valid UserUpdateForm form, 
 			@AuthenticationPrincipal User authUser) {
 		Optional<User> optional = userRepository.findById(id);
 		

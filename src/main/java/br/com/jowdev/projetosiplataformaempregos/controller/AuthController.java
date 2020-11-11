@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +36,7 @@ import br.com.jowdev.projetosiplataformaempregos.models.User;
 import br.com.jowdev.projetosiplataformaempregos.repository.PasswordResetTokenRepository;
 import br.com.jowdev.projetosiplataformaempregos.repository.RoleRepository;
 import br.com.jowdev.projetosiplataformaempregos.repository.UserRepository;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @RestController
 @RequestMapping("/auth")
@@ -71,6 +73,8 @@ public class AuthController {
 			String token = tokenService.generateToken(authentication);
 			User user = userRepository.getOne(tokenService.getUserId(token));
 			return ResponseEntity.ok(new TokenDto(token, "Bearer ", user));
+		} catch (BadCredentialsException e) {
+			throw e;					
 		} catch (Exception e) {
 			System.out.println(e + "exception");
 			return ResponseEntity.badRequest().build();

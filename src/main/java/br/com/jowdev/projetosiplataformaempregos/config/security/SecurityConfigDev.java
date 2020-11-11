@@ -1,6 +1,7 @@
 package br.com.jowdev.projetosiplataformaempregos.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import br.com.jowdev.projetosiplataformaempregos.repository.UserRepository;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
 
 @EnableWebSecurity
 @Configuration
@@ -54,6 +59,9 @@ public class SecurityConfigDev extends WebSecurityConfigurerAdapter {
 			.antMatchers("/h2-console/**").permitAll()
 			.antMatchers("/").permitAll()
 			.antMatchers("/qualifications/**").permitAll()
+			.antMatchers("/v3/api-docs/**").permitAll()
+			.antMatchers("/swagger-ui.html").permitAll()
+			.antMatchers("/swagger-ui/**").permitAll()
 			.anyRequest().authenticated()
 			.and().headers().frameOptions().disable()
 			.and().csrf().disable()
@@ -66,4 +74,5 @@ public class SecurityConfigDev extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 	}
+	
 }

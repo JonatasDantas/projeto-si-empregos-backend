@@ -1,5 +1,11 @@
 package br.com.jowdev.projetosiplataformaempregos.controller.form;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(example = "{\r\n" + 
+		"  \"email\": \"admin@admin.com\",\r\n" + 
+		"  \"password\": \"123456\"\r\n" + 
+		"}")
 public class LoginForm {
 	private String email;
 	private String password;
