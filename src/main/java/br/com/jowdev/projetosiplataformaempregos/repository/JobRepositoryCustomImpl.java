@@ -24,7 +24,7 @@ public class JobRepositoryCustomImpl implements JobRepositoryCustom {
     private EntityManager em;
 	
 	@Override
-	public Page<Job> getJobsByFilter(String occupation, String salary, Pageable pageable) {
+	public Page<Job> getJobsByFilter(String occupation, String salary, String title, Pageable pageable) {
     	CriteriaBuilder builder = em.getCriteriaBuilder();
     	CriteriaQuery<Job> query = builder.createQuery(Job.class);
     	Root<Job> root = query.from(Job.class);
@@ -43,6 +43,11 @@ public class JobRepositoryCustomImpl implements JobRepositoryCustom {
     		
     		Predicate salaryEquals = builder.between(root.get("salary"), salaryEnum.minValue, salaryEnum.maxValue);
     		conjunction = builder.and(conjunction, salaryEquals);
+    	}
+    	
+    	if (!title.isEmpty()) {
+    		Predicate titleLike = builder.like(root.get("title"), "%" + title + "%");
+    		conjunction = builder.and(conjunction, titleLike);
     	}
     	
     	TypedQuery<Job> typedQuery = em.createQuery(query.where(conjunction));
