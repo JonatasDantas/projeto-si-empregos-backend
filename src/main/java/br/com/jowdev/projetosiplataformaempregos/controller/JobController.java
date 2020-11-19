@@ -75,9 +75,11 @@ public class JobController {
 	@GetMapping
 	public Page<JobDto> findJobs(@PageableDefault(sort = "id", direction = Direction.ASC) Pageable page,
 			@RequestParam(required = false, defaultValue = "") String occupation,
-			@RequestParam(required = false, defaultValue = "") String salary) {
+			@RequestParam(required = false, defaultValue = "") String salary,
+			@RequestParam(required = false, defaultValue = "") String title
+			) {
 		try {
-			Page<Job> jobs = jobRepository.getJobsByFilter(occupation, salary, page);
+			Page<Job> jobs = jobRepository.getJobsByFilter(occupation, salary, title, page);
 			
 			return jobs.map(JobDto::new);	
 		} catch (IllegalArgumentException e) {
