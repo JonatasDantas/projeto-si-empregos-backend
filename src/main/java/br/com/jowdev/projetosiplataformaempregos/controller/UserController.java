@@ -1,7 +1,10 @@
 package br.com.jowdev.projetosiplataformaempregos.controller;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.CompanyDto;
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.JobDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.UserDetailsDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.UserDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.form.CompanyForm;
@@ -98,5 +102,18 @@ public class UserController {
 			@AuthenticationPrincipal User authUser) {
 		Page<Company> companies = companyRepository.findByUserId(page, userId);
 		return CompanyDto.convert(companies);
+	}
+	
+	@PreAuthorize("hasRole('ADMIN') or #authUser.getId() == #userId")
+	@GetMapping("/{userId}/jobs")
+	public List<JobDto> getJobApplications(@PathVariable Long userId, @PageableDefault(sort = "id", direction = Direction.ASC) Pageable page,
+			@AuthenticationPrincipal User authUser) {
+		Optional<User> user = userRepository.findById(userId);
+		
+		if (user.isPresent()) {
+			return user.get().getJobApplications().stream().map(JobDto::new).collect(Collectors.toList());
+		}
+		
+		return new ArrayList<>();
 	}
 }
