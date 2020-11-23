@@ -109,7 +109,7 @@ public class JobController {
 		return salaries;
 	}
 	
-	@PreAuthorize("hasAnyRole('USER', 'RECRUITER', 'ADMIN')")
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@Transactional
 	@PostMapping("/{id}/apply")
 	public ResponseEntity<Boolean> applyJob(@PathVariable Long id, @AuthenticationPrincipal User authUser) {
