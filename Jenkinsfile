@@ -6,12 +6,9 @@ node {
         checkout scm
     }
     stage('Unit Tests') {
-            agent {
-                docker { image 'maven:3-alpine' }
-            }
-            steps {
-                sh 'mvn clean test'
-            }
+        docker.image('maven:3-alpine') {
+            sh 'mvn clean test'
+        }
     }
     stage('Build') {      
         pomModel = readMavenPom file: 'pom.xml'
