@@ -6,7 +6,7 @@ node {
         checkout scm
     }
     stage('Unit Tests') {
-        docker.image("3-openjdk-11").inside {
+        docker.image("maven:3-openjdk-11").inside {
             sh 'mvn clean test'
         }
     }
