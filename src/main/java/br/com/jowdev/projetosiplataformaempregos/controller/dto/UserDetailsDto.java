@@ -17,6 +17,7 @@ public class UserDetailsDto {
 	private boolean emailVerified;
 	private List<RoleDto> roles;
 	private List<CompanyDto> companies;
+	private List<JobDto> applications;
 
 	public UserDetailsDto(User user) {
 		this.id = user.getId();
@@ -28,11 +29,12 @@ public class UserDetailsDto {
 
 		this.roles = new ArrayList<>();
 		this.roles.addAll(user.getRoles().stream().map(RoleDto::new).collect(Collectors.toList()));
-		
-		System.out.println(user.getCompanies());
 
 		this.companies = new ArrayList<>();
 		this.companies.addAll(user.getCompanies().stream().map(CompanyDto::new).collect(Collectors.toList()));
+		
+		this.applications = new ArrayList<>();
+		this.applications.addAll(user.getJobApplications().stream().map(JobDto::new).collect(Collectors.toList()));
 	}
 
 	public Long getId() {
@@ -65,6 +67,10 @@ public class UserDetailsDto {
 
 	public List<CompanyDto> getCompanies() {
 		return companies;
+	}
+
+	public List<JobDto> getApplications() {
+		return applications;
 	}
 
 	public static Page<UserDetailsDto> convert(Page<User> users) {

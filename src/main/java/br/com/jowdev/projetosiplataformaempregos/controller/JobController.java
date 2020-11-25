@@ -2,9 +2,11 @@ package br.com.jowdev.projetosiplataformaempregos.controller;
 
 import java.net.URI;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,7 @@ import br.com.jowdev.projetosiplataformaempregos.models.SalaryRange;
 import br.com.jowdev.projetosiplataformaempregos.models.User;
 import br.com.jowdev.projetosiplataformaempregos.repository.CompanyRepository;
 import br.com.jowdev.projetosiplataformaempregos.repository.JobRepository;
+import br.com.jowdev.projetosiplataformaempregos.repository.UserRepository;
 
 @RestController
 @RequestMapping("/jobs")
@@ -44,6 +47,9 @@ public class JobController {
 	
 	@Autowired
 	private CompanyRepository companyRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	@PreAuthorize("hasAnyRole('RECRUITER', 'ADMIN')")
 	@PostMapping
@@ -69,9 +75,11 @@ public class JobController {
 	@GetMapping
 	public Page<JobDto> findJobs(@PageableDefault(sort = "id", direction = Direction.ASC) Pageable page,
 			@RequestParam(required = false, defaultValue = "") String occupation,
-			@RequestParam(required = false, defaultValue = "") String salary) {
+			@RequestParam(required = false, defaultValue = "") String salary,
+			@RequestParam(required = false, defaultValue = "") String title
+			) {
 		try {
-			Page<Job> jobs = jobRepository.getJobsByFilter(occupation, salary, page);
+			Page<Job> jobs = jobRepository.getJobsByFilter(occupation, salary, title, page);
 			
 			return jobs.map(JobDto::new);	
 		} catch (IllegalArgumentException e) {
@@ -100,4 +108,25 @@ public class JobController {
 		
 		return salaries;
 	}
+	
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+	@Transactional
+	@PostMapping("/{id}/apply")
+	public ResponseEntity<Boolean> applyJob(@PathVariable Long id, @AuthenticationPrincipal User authUser) {
+		Optional<Job> optional = jobRepository.findById(id);
+		
+		if (optional.isPresent()) {
+			Job job = optional.get();
+			User user = userRepository.findById(authUser.getId()).get();
+			List<User> candidates = job.getCandidates();
+			
+			candidates.add(user);
+			job.setCandidates(candidates);
+
+			return ResponseEntity.ok().build();
+		}
+
+		return ResponseEntity.notFound().build();
+	}
+	
 }

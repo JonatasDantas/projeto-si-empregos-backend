@@ -5,8 +5,12 @@ node {
     stage('Checkout') {
         checkout scm
     }
-    stage('Build') {
-      
+    stage('Unit Tests') {
+        docker.image("maven:3-openjdk-11").inside {
+            sh 'mvn clean test'
+        }
+    }
+    stage('Build') {      
         pomModel = readMavenPom file: 'pom.xml'
         println("===================== Versão do Maven: " + pomModel.getVersion() + "=====================")
         app = docker.build("kakaique2000/backend-emprego:" + pomModel.getVersion())

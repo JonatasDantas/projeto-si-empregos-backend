@@ -4,6 +4,7 @@ import br.com.jowdev.projetosiplataformaempregos.models.Job;
 import br.com.jowdev.projetosiplataformaempregos.models.Occupation;
 
 public class JobDto {
+	private long id;
 	private String title;
 	private String description;
 	private Float salary;
@@ -12,6 +13,7 @@ public class JobDto {
 
 	public JobDto(Job job) {
 		super();
+		this.id = job.getId();
 		this.title = job.getTitle();
 		this.description = job.getDescription();
 		this.salary = job.getSalary();
@@ -19,6 +21,10 @@ public class JobDto {
 		this.city = job.getCompany().getCity();
 	}
 	
+	public long getId() {
+		return id;
+	}
+
 	public String getTitle() {
 		return title;
 	}

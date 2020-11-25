@@ -6,7 +6,7 @@ public enum SalaryRange {
 	Entre2000e3000("Entre R$ 2.000,00 e R$ 3.000,00", 2000.0, 3000.0),
 	Entre3000e4000("Entre R$ 3.000,00 e R$ 4.000,00", 3000.0, 4000.0),
 	Entre4000e6000("Entre R$ 4.000,00 e R$ 6.000,00", 4000.0, 6000.0),
-	AcimaDe6000("Acima de R$ 6.000,00", 6000.0, Double.POSITIVE_INFINITY);
+	AcimaDe6000("Acima de R$ 6.000,00", 6000.0, 1000000000.0);
 
 	public String displayName;
 	public Double minValue;

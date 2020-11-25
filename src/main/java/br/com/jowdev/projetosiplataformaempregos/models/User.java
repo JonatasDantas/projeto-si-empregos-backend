@@ -42,16 +42,19 @@ public class User implements UserDetails {
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private List<Role> roles = new ArrayList<>();
-	
+
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<Company> companies = new ArrayList<>();
+
+	@ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
+	private List<Job> jobs = new ArrayList<>();
 
 	public User() {
 		super();
 	}
 
-	public User(String name, String email, String password, UserGender gender, String cpf,
-			String phone, boolean emailVerified, List<Role> roles, List<Company> companies) {
+	public User(String name, String email, String password, UserGender gender, String cpf, String phone,
+			boolean emailVerified, List<Role> roles, List<Company> companies) {
 		super();
 		this.name = name;
 		this.email = email;
@@ -129,13 +132,21 @@ public class User implements UserDetails {
 	public void setEmailVerified(boolean emailVerified) {
 		this.emailVerified = emailVerified;
 	}
-	
+
 	public List<Company> getCompanies() {
 		return companies;
 	}
 
 	public void setCompanies(List<Company> companies) {
 		this.companies = companies;
+	}
+
+	public List<Job> getJobApplications() {
+		return jobs;
+	}
+
+	public void setJobApplications(List<Job> jobApplications) {
+		this.jobs = jobApplications;
 	}
 
 	public void setPassword(String password) {
@@ -150,9 +161,9 @@ public class User implements UserDetails {
 	public List<Role> getRoles() {
 		return roles;
 	}
-	
+
 	@Transactional
-	public void setRoles(List<Role> roles) { 
+	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
 
