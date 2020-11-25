@@ -7,7 +7,7 @@ node {
     }
     stage('Unit Tests') {
         docker.image("maven:3-openjdk-11").inside {
-            sh 'mvn clean test'
+            sh 'mvn clean verify'
         }
     }
     stage('Build') {      
