@@ -37,8 +37,11 @@ import br.com.jowdev.projetosiplataformaempregos.models.User;
 import br.com.jowdev.projetosiplataformaempregos.repository.CompanyRepository;
 import br.com.jowdev.projetosiplataformaempregos.repository.JobRepository;
 import br.com.jowdev.projetosiplataformaempregos.repository.UserRepository;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
+@SecurityRequirement(name = "Bearer Token")
 @RequestMapping("/jobs")
 public class JobController {
 
@@ -73,7 +76,7 @@ public class JobController {
 	}
 	
 	@GetMapping
-	public Page<JobDto> findJobs(@PageableDefault(sort = "id", direction = Direction.ASC) Pageable page,
+	public Page<JobDto> findJobs(@PageableDefault(sort = "id", direction = Direction.ASC) @Parameter(hidden = true) Pageable page,
 			@RequestParam(required = false, defaultValue = "") String occupation,
 			@RequestParam(required = false, defaultValue = "") String salary,
 			@RequestParam(required = false, defaultValue = "") String title
