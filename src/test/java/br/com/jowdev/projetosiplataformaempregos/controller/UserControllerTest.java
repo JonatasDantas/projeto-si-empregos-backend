@@ -163,36 +163,36 @@ class UserControllerTest {
 				.andExpect(jsonPath("$.city", is(equalTo("São Paulo"))));
 	}
 	
-//	@Test
-//	void deveListarCompanhias() throws URISyntaxException, Exception {
-//		mockMvc.perform(
-//				MockMvcRequestBuilders
-//					.post(new URI("/users/" + userLoginDto.getUser().getId() + "/companies"))
-//					.content("{\r\n" + 
-//							"  \"cnpj\": \"00000000000191\",\r\n" + 
-//							"  \"name\": \"Banco do Brasil\",\r\n" + 
-//							"  \"street\": \"Av. Campanella\",\r\n" + 
-//							"  \"number\": 118,\r\n" + 
-//							"  \"complement\": \"perto do Itau\",\r\n" + 
-//							"  \"cep\": \"08220830\",\r\n" + 
-//							"  \"city\": \"São Paulo\",\r\n" + 
-//							"  \"state\": \"SP\"\r\n" + 
-//							"}")
-//					.contentType(MediaType.APPLICATION_JSON)
-//					.header("Authorization", "Bearer " + userLoginDto.getToken()));
-//		
-//		mockMvc.perform(
-//				MockMvcRequestBuilders
-//					.get(new URI("/users/" + userLoginDto.getUser().getId() + "/companies"))
-//					.contentType(MediaType.APPLICATION_JSON)
-//					.header("Authorization", "Bearer " + userLoginDto.getToken()))
-//				.andExpect(status().isOk())
-//				.andExpect(jsonPath("$.content[:1].complement").exists())
-//				.andExpect(jsonPath("$.content[:1].id").exists())
-//				.andExpect(jsonPath("$.content[:1].name").exists())
-//				.andExpect(jsonPath("$.content[:1].street").exists())
-//				.andExpect(jsonPath("$.content[:1].city").exists());
-//	}
+	@Test
+	void deveListarCompanhias() throws URISyntaxException, Exception {
+		mockMvc.perform(
+				MockMvcRequestBuilders
+					.post(new URI("/users/" + userLoginDto.getUser().getId() + "/companies"))
+					.content("{\r\n" + 
+							"  \"cnpj\": \"00000000000191\",\r\n" + 
+							"  \"name\": \"Banco do Brasil\",\r\n" + 
+							"  \"street\": \"Av. Campanella\",\r\n" + 
+							"  \"number\": 118,\r\n" + 
+							"  \"complement\": \"perto do Itau\",\r\n" + 
+							"  \"cep\": \"08220830\",\r\n" + 
+							"  \"city\": \"São Paulo\",\r\n" + 
+							"  \"state\": \"SP\"\r\n" + 
+							"}")
+					.contentType(MediaType.APPLICATION_JSON)
+					.header("Authorization", "Bearer " + userLoginDto.getToken()));
+		
+		mockMvc.perform(
+				MockMvcRequestBuilders
+					.get(new URI("/users/" + userLoginDto.getUser().getId() + "/companies"))
+					.contentType(MediaType.APPLICATION_JSON)
+					.header("Authorization", "Bearer " + userLoginDto.getToken()))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content[:1].complement").exists())
+				.andExpect(jsonPath("$.content[:1].id").exists())
+				.andExpect(jsonPath("$.content[:1].name").exists())
+				.andExpect(jsonPath("$.content[:1].street").exists())
+				.andExpect(jsonPath("$.content[:1].city").exists());
+	}
 
 	
 }
