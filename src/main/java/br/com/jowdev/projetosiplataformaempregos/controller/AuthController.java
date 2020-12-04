@@ -10,6 +10,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -84,11 +85,11 @@ public class AuthController {
 	@PostMapping("/signup")
 	public ResponseEntity<?> signup(@RequestBody @Valid SignupForm form, UriComponentsBuilder uriBuilder) {
 		if (userRepository.existsByEmail(form.getEmail())) {
-			return ResponseEntity.badRequest().body("Já existe um usuário cadastrado com este e-mail");
+			return ResponseEntity.status(HttpStatus.CONFLICT.value()).body("Já existe um usuário cadastrado com este e-mail");
 		}
 		
 		if (userRepository.existsByCpf(form.getCpf())) {
-			return ResponseEntity.badRequest().body("Já existe um usuário cadastrado com este CPF");
+			return ResponseEntity.status(HttpStatus.CONFLICT.value()).body("Já existe um usuário cadastrado com este CPF");
 		}
 		
 		User user = form.convert(roleRepository);
