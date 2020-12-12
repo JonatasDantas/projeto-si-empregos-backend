@@ -25,6 +25,35 @@ public class JobRepositoryCustomImpl implements JobRepositoryCustom {
 	
 	@Override
 	public Page<Job> getJobsByFilter(String occupation, String salary, String title, Pageable pageable) {
+		
+		/**
+		 * Código antigo - concatenando strings
+		boolean hasWhere = false;
+		String queryString = "SELECT j from Job j where";
+		
+		if (!occupation.isEmpty()) {
+			hasWhere = true;
+			queryString += "j.occupation = :occupation";
+		}
+		
+		if (!salary.isEmpty()) {
+			hasWhere = true;			
+			queryString += "j.salary Between :salaryEnum.minValue and :salaryEnum.maxValue";
+		}
+		
+		if (!title.isEmpty()) {
+			hasWhere = true;
+			queryString += "j.salary like %:title%";
+		}
+		
+		if (!hasWhere) {
+			queryString += "true";
+		}
+		
+		TypedQuery<Job> typedQuery = em.createQuery(queryString);
+		**/
+		
+		// Código pós-refatoração - usando Criteria
     	CriteriaBuilder builder = em.getCriteriaBuilder();
     	CriteriaQuery<Job> query = builder.createQuery(Job.class);
     	Root<Job> root = query.from(Job.class);
