@@ -114,8 +114,8 @@ public class AuthController {
 			message.setTo(email);
 			message.setSubject("Troca de senha - Plataforma Empregos");
 			
-			URI uri = uriBuilder.path("/reset-password?token={token}").buildAndExpand(entity.getToken()).toUri();
-
+			URI uri = uriBuilder.port(80).path("/reset-password?token={token}").buildAndExpand(entity.getToken()).toUri();
+			
 			message.setText("Olá " + user.get().getName() + ", \n\n" +
 					"Você requisitou uma troca de senha. Clique no link abaixo para reseta-lá. \n" +
 					uri.toString() + " \n\n Obrigado.");

@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>br.com.jowdev</groupId>
 	<artifactId>projeto-si-plataforma-empregos</artifactId>
-	<version>1.1.1</version>
+	<version>1.1.2</version>
 	<name>projeto-si-plataforma-empregos</name>
 	<description>Spring Boot project for Job Search Website</description>
 
