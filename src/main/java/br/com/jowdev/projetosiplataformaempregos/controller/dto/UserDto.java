@@ -1,7 +1,10 @@
 package br.com.jowdev.projetosiplataformaempregos.controller.dto;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 
+import br.com.jowdev.projetosiplataformaempregos.models.Role;
 import br.com.jowdev.projetosiplataformaempregos.models.User;
 
 public class UserDto {
@@ -11,6 +14,7 @@ public class UserDto {
 	private String email;
 	private String cpf;
 	private String phone;
+	private List<Role> role;
 	private boolean emailVerified;
 
 	public UserDto(User user) {
@@ -20,6 +24,7 @@ public class UserDto {
 		this.cpf = user.getCpf();
 		this.phone = user.getPhone();
 		this.emailVerified = user.isEmailVerified();
+		this.setRole(user.getRoles());
 	}
 
 	public Long getId() {
@@ -40,6 +45,14 @@ public class UserDto {
 
 	public String getPhone() {
 		return phone;
+	}
+
+	public List<Role> getRole() {
+		return role;
+	}
+
+	public void setRole(List<Role> role) {
+		this.role = role;
 	}
 
 	public boolean isEmailVerified() {
