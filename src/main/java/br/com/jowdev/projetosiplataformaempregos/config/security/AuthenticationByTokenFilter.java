@@ -1,9 +1,11 @@
 package br.com.jowdev.projetosiplataformaempregos.config.security;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -47,8 +49,17 @@ public class AuthenticationByTokenFilter extends OncePerRequestFilter {
 
 	private String getToken(HttpServletRequest request) {
 		String token = request.getHeader("Authorization");
+		if(token==null) {
+			try {
+			token = Arrays.stream(request.getCookies()).filter(c -> c.getName().equals("Authorization")).findFirst().orElseGet(
+					() -> new Cookie("null", null)
+			).getValue();
+			} catch (Exception e) {
+				return null;
+			}
+		}
 		
-		if (token == null || token.isEmpty() || !token.startsWith("Bearer ")) {
+		if (token == null || token.isEmpty() || !token.replace("+", " ").startsWith("Bearer ")) {
 			return null;
 		}
 

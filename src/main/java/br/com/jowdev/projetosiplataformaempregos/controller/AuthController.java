@@ -5,9 +5,12 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -65,7 +68,7 @@ public class AuthController {
 	private String mailSender;
 	
 	@PostMapping("/login")
-	public ResponseEntity<TokenDto> login(@RequestBody @Valid LoginForm form) {
+	public ResponseEntity<TokenDto> login(@RequestBody @Valid LoginForm form, HttpServletResponse response) {
 		System.out.println(form.getEmail());
 		UsernamePasswordAuthenticationToken loginData = new UsernamePasswordAuthenticationToken(form.getEmail(), form.getPassword());
 
@@ -73,9 +76,22 @@ public class AuthController {
 			Authentication authentication = authManager.authenticate(loginData);
 			String token = tokenService.generateToken(authentication);
 			User user = userRepository.getOne(tokenService.getUserId(token));
+
+			val cookie = new Cookie(
+					"Authorization",
+					"Bearer+" + token
+			);
+
+			cookie.setMaxAge(864000);
+			cookie.setHttpOnly(false);
+			cookie.setPath("/");
+			response.addCookie(cookie);
+
 			return ResponseEntity.ok(new TokenDto(token, "Bearer ", user));
+
 		} catch (BadCredentialsException e) {
-			throw e;					
+
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		} catch (Exception e) {
 			System.out.println(e + "exception");
 			return ResponseEntity.badRequest().build();
@@ -96,7 +112,10 @@ public class AuthController {
 		userRepository.save(user);
 		
 		URI uri = uriBuilder.path("/users/{id}").buildAndExpand(user.getId()).toUri();
-		return ResponseEntity.created(uri).body(new UserDetailsDto(user));
+		return ResponseEntity
+				.created(uri)
+				.body(new UserDetailsDto(user))
+				;
 	}
 	
 	@PostMapping("/reset-password")

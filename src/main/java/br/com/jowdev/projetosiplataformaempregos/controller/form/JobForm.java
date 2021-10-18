@@ -1,80 +1,65 @@
 package br.com.jowdev.projetosiplataformaempregos.controller.form;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import br.com.jowdev.projetosiplataformaempregos.models.Company;
 import br.com.jowdev.projetosiplataformaempregos.models.Job;
-import br.com.jowdev.projetosiplataformaempregos.models.Occupation;
+import br.com.jowdev.projetosiplataformaempregos.models.Knowledge;
 import br.com.jowdev.projetosiplataformaempregos.repository.CompanyRepository;
+import br.com.jowdev.projetosiplataformaempregos.repository.KnowledgeRepository;
+import lombok.Data;
+import lombok.val;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 
+@Data
 public class JobForm {
 
-	@NotNull
-	@NotEmpty
-	private String title;
+    @NotNull
+    @NotEmpty
+    private String title;
 
-	@NotNull
-	@NotEmpty
-	private String description;
+    @NotNull
+    @NotEmpty
+    private String description;
 
-	private Float salary;
+    private Float salary;
 
-	@NotNull
-	private Occupation occupation;
+    @NotNull
+    private List<Knowledge> knowledges;
 
-	@NotNull
-	private Long companyId;
+    @NotNull
+    private Long companyId;
 
-	public String getTitle() {
-		return title;
-	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public Job convert(CompanyRepository companyRepository, KnowledgeRepository knowledgeRepository) {
+        // Encontra as Entities
+        Optional<Company> company = companyRepository.findById(companyId);
+        val knowledges = knowledgeRepository.findAllById(
+                getKnowledges().stream().map(e -> e.getId()).collect(Collectors.toList())
+        );
 
-	public String getDescription() {
-		return description;
-	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+        // Seta as propriedades
+        val job = new Job();
+        job.setDescription(description);
+        job.setSalary(salary);
+        job.setTitle(title);
+        job.setKnowledges(knowledges);
+        job.setCompany(company.orElseGet(() -> {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "companhia não encontrada com id " + companyId
+            );
+        }));
 
-	public Float getSalary() {
-		return salary;
-	}
+        return job;
 
-	public void setSalary(Float salary) {
-		this.salary = salary;
-	}
 
-	public Occupation getOccupation() {
-		return occupation;
-	}
-
-	public void setOccupation(Occupation occupation) {
-		this.occupation = occupation;
-	}
-
-	public Long getCompanyId() {
-		return companyId;
-	}
-
-	public void setCompanyId(Long companyId) {
-		this.companyId = companyId;
-	}
-	
-	public Job convert(CompanyRepository companyRepository) {
-		Optional<Company> company = companyRepository.findById(companyId);
-		
-		if (company.isPresent()) {
-			return new Job(title, description, salary, occupation, company.get());
-		}
-		
-		return null;
-	}
+    }
 }

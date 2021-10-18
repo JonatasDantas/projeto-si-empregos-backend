@@ -15,7 +15,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import br.com.jowdev.projetosiplataformaempregos.models.Job;
-import br.com.jowdev.projetosiplataformaempregos.models.Occupation;
+import br.com.jowdev.projetosiplataformaempregos.models.Knowledge;
 import br.com.jowdev.projetosiplataformaempregos.models.SalaryRange;
 
 public class JobRepositoryCustomImpl implements JobRepositoryCustom {
@@ -24,47 +24,18 @@ public class JobRepositoryCustomImpl implements JobRepositoryCustom {
     private EntityManager em;
 	
 	@Override
-	public Page<Job> getJobsByFilter(String occupation, String salary, String title, Pageable pageable) {
-		
-		/**
-		 * Código antigo - concatenando strings
-		boolean hasWhere = false;
-		String queryString = "SELECT j from Job j where";
-		
-		if (!occupation.isEmpty()) {
-			hasWhere = true;
-			queryString += "j.occupation = :occupation";
-		}
-		
-		if (!salary.isEmpty()) {
-			hasWhere = true;			
-			queryString += "j.salary Between :salaryEnum.minValue and :salaryEnum.maxValue";
-		}
-		
-		if (!title.isEmpty()) {
-			hasWhere = true;
-			queryString += "j.salary like %:title%";
-		}
-		
-		if (!hasWhere) {
-			queryString += "true";
-		}
-		
-		TypedQuery<Job> typedQuery = em.createQuery(queryString);
-		**/
-		
-		// Código pós-refatoração - usando Criteria
+	public Page<Job> getJobsByFilter(String knowledge, String salary, String title, Pageable pageable) {
+
     	CriteriaBuilder builder = em.getCriteriaBuilder();
     	CriteriaQuery<Job> query = builder.createQuery(Job.class);
     	Root<Job> root = query.from(Job.class);
     	
     	Predicate conjunction = builder.conjunction();
     	
-    	if (!occupation.isEmpty()) {
-    		Occupation occupationEnum = Occupation.valueOf(occupation);
+    	if (!knowledge.isEmpty()) {
     		
-    		Predicate occupationEquals = builder.equal(root.get("occupation"), occupationEnum);
-    		conjunction = builder.and(occupationEquals);
+    		Predicate knowledgeEquals = builder.equal(root.get("knowledges"), knowledge);
+    		conjunction = builder.and(knowledgeEquals);
     	}
 
     	if (!salary.isEmpty()) {

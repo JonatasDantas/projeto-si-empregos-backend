@@ -1,14 +1,22 @@
 package br.com.jowdev.projetosiplataformaempregos.controller.dto;
 
 import br.com.jowdev.projetosiplataformaempregos.models.Job;
-import br.com.jowdev.projetosiplataformaempregos.models.Occupation;
+import br.com.jowdev.projetosiplataformaempregos.models.Knowledge;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.util.List;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class JobDetailsDto {
 	private Long id;
 	private String title;
 	private String description;
 	private Float salary;
-	private Occupation occupation;
+	private List<Knowledge> knowledges;
 	private CompanyDto company;
 
 	public JobDetailsDto(Job job) {
@@ -17,32 +25,7 @@ public class JobDetailsDto {
 		this.title = job.getTitle();
 		this.description = job.getDescription();
 		this.salary = job.getSalary();
-		this.occupation = job.getOccupation();
+		this.knowledges = job.getKnowledges();
 		this.company = new CompanyDto(job.getCompany());
 	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public Float getSalary() {
-		return salary;
-	}
-
-	public Occupation getOccupation() {
-		return occupation;
-	}
-
-	public CompanyDto getCompany() {
-		return company;
-	}
-
 }
