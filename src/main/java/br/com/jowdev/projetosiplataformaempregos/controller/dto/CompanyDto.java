@@ -1,9 +1,11 @@
 package br.com.jowdev.projetosiplataformaempregos.controller.dto;
 
+import lombok.Data;
 import org.springframework.data.domain.Page;
 
 import br.com.jowdev.projetosiplataformaempregos.models.Company;
 
+@Data
 public class CompanyDto {
 
 	private Long id;
@@ -13,6 +15,7 @@ public class CompanyDto {
 	private String street;
 	private Integer number;
 	private String complement;
+	private String logoUrl;
 
 	public CompanyDto(Company company) {
 		super();
@@ -23,34 +26,7 @@ public class CompanyDto {
 		this.street = company.getStreet();
 		this.number = company.getNumber();
 		this.complement = company.getComplement();
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public String getStreet() {
-		return street;
-	}
-
-	public Integer getNumber() {
-		return number;
-	}
-
-	public String getComplement() {
-		return complement;
+		this.logoUrl = company.getLogoUrl();
 	}
 	
 	public static Page<CompanyDto> convert(Page<Company> companies) {

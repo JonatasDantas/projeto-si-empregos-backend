@@ -1,5 +1,9 @@
 package br.com.jowdev.projetosiplataformaempregos.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +17,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Company {
 
 	@Id
@@ -21,12 +28,17 @@ public class Company {
 
 	private String cnpj;
 	private String name;
+
+	private String logoUrl;
+
+	//Endereco
 	private String street;
 	private Integer number;
 	private String complement;
 	private String cep;
 	private String city;
 	private String state;
+
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private User user;
@@ -45,90 +57,6 @@ public class Company {
 		this.cep = cep;
 		this.city = city;
 		this.state = state;
-		this.user = user;
-	}
-	
-	public Company() {
-		super();
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getCnpj() {
-		return cnpj;
-	}
-
-	public void setCnpj(String cnpj) {
-		this.cnpj = cnpj;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getStreet() {
-		return street;
-	}
-
-	public void setStreet(String street) {
-		this.street = street;
-	}
-
-	public Integer getNumber() {
-		return number;
-	}
-
-	public void setNumber(Integer number) {
-		this.number = number;
-	}
-
-	public String getComplement() {
-		return complement;
-	}
-
-	public void setComplement(String complement) {
-		this.complement = complement;
-	}
-
-	public String getCep() {
-		return cep;
-	}
-
-	public void setCep(String cep) {
-		this.cep = cep;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
 		this.user = user;
 	}
 }

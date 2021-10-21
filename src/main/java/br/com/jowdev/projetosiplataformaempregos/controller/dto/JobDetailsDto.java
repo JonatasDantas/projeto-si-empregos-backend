@@ -15,6 +15,7 @@ public class JobDetailsDto {
 	private Long id;
 	private String title;
 	private String description;
+	private String fullDescription;
 	private Float salary;
 	private List<Knowledge> knowledges;
 	private CompanyDto company;
@@ -24,6 +25,7 @@ public class JobDetailsDto {
 		this.id = job.getId();
 		this.title = job.getTitle();
 		this.description = job.getDescription();
+		this.fullDescription = job.getFullDescription();
 		this.salary = job.getSalary();
 		this.knowledges = job.getKnowledges();
 		this.company = new CompanyDto(job.getCompany());

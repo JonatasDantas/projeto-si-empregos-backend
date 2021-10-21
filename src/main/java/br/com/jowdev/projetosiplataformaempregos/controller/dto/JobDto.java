@@ -18,6 +18,7 @@ public class JobDto {
 	private Float salary;
 	private List<Knowledge> knowledges;
 	private String city;
+	private String companyLogo;
 
 	public JobDto(Job job) {
 		super();
@@ -27,5 +28,6 @@ public class JobDto {
 		this.salary = job.getSalary();
 		this.knowledges = job.getKnowledges();
 		this.city = job.getCompany().getCity();
+		this.companyLogo = job.getCompany().getLogoUrl();
 	}
 }

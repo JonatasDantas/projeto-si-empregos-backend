@@ -71,7 +71,7 @@ public class JobController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<JobDetailsDto> details(@PathVariable Long id, @AuthenticationPrincipal User authUser) {
+	public ResponseEntity<JobDetailsDto> details(@PathVariable Long id) {
 		Optional<Job> optional = jobRepository.findById(id);
 		
 		if (optional.isPresent()) {

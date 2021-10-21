@@ -49,15 +49,6 @@ public class AuthenticationByTokenFilter extends OncePerRequestFilter {
 
 	private String getToken(HttpServletRequest request) {
 		String token = request.getHeader("Authorization");
-		if(token==null) {
-			try {
-			token = Arrays.stream(request.getCookies()).filter(c -> c.getName().equals("Authorization")).findFirst().orElseGet(
-					() -> new Cookie("null", null)
-			).getValue();
-			} catch (Exception e) {
-				return null;
-			}
-		}
 		
 		if (token == null || token.isEmpty() || !token.replace("+", " ").startsWith("Bearer ")) {
 			return null;
