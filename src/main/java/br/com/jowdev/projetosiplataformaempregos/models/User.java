@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.transaction.Transactional;
 
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -32,6 +33,7 @@ public class User implements UserDetails {
 	private String name;
 	private String email;
 	private String password;
+	private String profilePic;
 
 	@Enumerated(EnumType.STRING)
 	private UserGender gender;
@@ -54,7 +56,7 @@ public class User implements UserDetails {
 	}
 
 	public User(String name, String email, String password, UserGender gender, String cpf, String phone,
-			boolean emailVerified, List<Role> roles, List<Company> companies) {
+			boolean emailVerified, List<Role> roles, List<Company> companies, String profilePic) {
 		super();
 		this.name = name;
 		this.email = email;
@@ -65,6 +67,7 @@ public class User implements UserDetails {
 		this.emailVerified = emailVerified;
 		this.roles = roles;
 		this.companies = companies;
+		this.profilePic = profilePic;
 	}
 
 	@Override
@@ -185,5 +188,13 @@ public class User implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	public String getProfilePic() {
+		return profilePic;
+	}
+
+	public void setProfilePic(String profilePic) {
+		this.profilePic = profilePic;
 	}
 }

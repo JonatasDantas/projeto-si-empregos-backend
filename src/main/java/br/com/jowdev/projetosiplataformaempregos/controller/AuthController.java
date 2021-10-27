@@ -1,6 +1,7 @@
 package br.com.jowdev.projetosiplataformaempregos.controller;
 
 import java.net.URI;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -21,6 +22,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -66,6 +68,7 @@ public class AuthController {
     
 	@Value("${spring.mail.username}")
 	private String mailSender;
+
 	
 	@PostMapping("/login")
 	public ResponseEntity<TokenDto> login(@RequestBody @Valid LoginForm form, HttpServletResponse response) {

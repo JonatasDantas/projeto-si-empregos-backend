@@ -25,7 +25,8 @@ class UserTest {
 					"1140028922",
 					true,
 					roles,
-					companies
+					companies,
+				""
 				);
 		
 		assertThat(user.getName()).isEqualTo("nome");

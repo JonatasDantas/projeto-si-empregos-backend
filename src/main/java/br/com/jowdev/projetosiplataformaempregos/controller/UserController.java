@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,13 +18,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.CompanyDto;
@@ -41,6 +36,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
 @SecurityRequirement(name = "Bearer Token")
+@CrossOrigin(origins = "*")
 @RequestMapping("/users")
 public class UserController {
 
@@ -49,6 +45,16 @@ public class UserController {
 	
 	@Autowired
 	private CompanyRepository companyRepository;
+
+
+	@GetMapping("/me")
+	public ResponseEntity<UserDetailsDto> getMyself(@AuthenticationPrincipal @Parameter(hidden = true) User authUser) {
+		val optionalUser = userRepository.findById(authUser.getId());
+		if(optionalUser.isPresent()) {
+			return ResponseEntity.ok(new UserDetailsDto(optionalUser.get()));
+		}
+		return ResponseEntity.notFound().build();
+	}
 
 	@GetMapping
 	@PreAuthorize("hasRole('ADMIN')")
@@ -70,7 +76,7 @@ public class UserController {
 	}
 
 	@PreAuthorize("hasRole('ADMIN') or #authUser.getId() == #id")
-	@PutMapping("/{id}")
+	@PatchMapping("/{id}")
 	@Transactional
 	public ResponseEntity<UserDetailsDto> updateUser(@PathVariable Long id, @RequestBody @Valid UserUpdateForm form, 
 			@AuthenticationPrincipal User authUser) {

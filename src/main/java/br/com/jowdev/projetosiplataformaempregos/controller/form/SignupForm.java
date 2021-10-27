@@ -45,6 +45,8 @@ public class SignupForm {
 	@NotNull
 	private boolean recruiter;
 
+	private String profilePic;
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -121,6 +123,14 @@ public class SignupForm {
 		String name = firstName.trim() + " " + lastName.trim();
 		String hashedPassword = new BCryptPasswordEncoder().encode(password);
 		
-		return new User(name, email, hashedPassword, gender, cpf, phone, false, roles, new ArrayList<>());
+		return new User(name, email, hashedPassword, gender, cpf, phone, false, roles, new ArrayList<>(), profilePic);
+	}
+
+	public String getProfilePic() {
+		return profilePic;
+	}
+
+	public void setProfilePic(String profilePic) {
+		this.profilePic = profilePic;
 	}
 }

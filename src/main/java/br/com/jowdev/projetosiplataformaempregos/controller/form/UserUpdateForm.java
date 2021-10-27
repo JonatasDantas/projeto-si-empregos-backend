@@ -3,64 +3,55 @@ package br.com.jowdev.projetosiplataformaempregos.controller.form;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import br.com.jowdev.projetosiplataformaempregos.models.User;
 import br.com.jowdev.projetosiplataformaempregos.models.UserGender;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import org.hibernate.validator.constraints.URL;
 
+@Data
 public class UserUpdateForm {
-	@NotNull
-	@NotEmpty
-	private String firstName;
 
-	@NotNull
-	@NotEmpty
-	private String lastName;
+	@Size(min = 3)
+	private String name;
 
 	@Email
 	private String email;
-	
-	@NotNull
+
+	@URL
+	private String profilePic;
+
 	private UserGender gender;
 
-	@NotNull
-	@NotEmpty
+	@Size(min = 11, max = 11)
+	@JsonProperty("cpfcnpj")
 	private String cpf;
 
-	@NotNull
-	@NotEmpty
+	@Size(min = 10, max = 11)
 	private String phone;
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public void setGender(UserGender gender) {
-		this.gender = gender;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
 	
 	public User update(User user) {
-		user.setName(firstName.trim() + " " + lastName.trim());
-		user.setEmail(email);
-		user.setGender(gender);
-		user.setCpf(cpf);
-		user.setPhone(phone);
-		
+		if(name != null)
+			user.setName(name.trim());
+
+		if(email != null)
+			user.setEmail(email);
+
+		if(gender != null)
+			user.setGender(gender);
+
+		if(cpf != null)
+			user.setCpf(cpf);
+
+		if(phone != null)
+			user.setPhone(phone);
+
+		if(profilePic != null)
+			user.setProfilePic(profilePic);
+
 		return user;
 	}
 }

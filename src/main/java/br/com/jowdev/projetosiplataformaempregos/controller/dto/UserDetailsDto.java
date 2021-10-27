@@ -4,16 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import br.com.jowdev.projetosiplataformaempregos.models.UserGender;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 import org.springframework.data.domain.Page;
 
 import br.com.jowdev.projetosiplataformaempregos.models.User;
 
+@Data
 public class UserDetailsDto {
 	private Long id;
 	private String name;
 	private String email;
 	private String cpf;
 	private String phone;
+	private String profilePic;
+	private UserGender gender;
 	private boolean emailVerified;
 	private List<RoleDto> roles;
 	private List<CompanyDto> companies;
@@ -26,6 +32,8 @@ public class UserDetailsDto {
 		this.cpf = user.getCpf();
 		this.phone = user.getPhone();
 		this.emailVerified = user.isEmailVerified();
+		this.profilePic = user.getProfilePic();
+		this.gender = user.getGender();
 
 		this.roles = new ArrayList<>();
 		this.roles.addAll(user.getRoles().stream().map(RoleDto::new).collect(Collectors.toList()));
@@ -35,45 +43,5 @@ public class UserDetailsDto {
 		
 		this.applications = new ArrayList<>();
 		this.applications.addAll(user.getJobApplications().stream().map(JobDto::new).collect(Collectors.toList()));
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public boolean isEmailVerified() {
-		return emailVerified;
-	}
-
-	public List<RoleDto> getRoles() {
-		return roles;
-	}
-
-	public List<CompanyDto> getCompanies() {
-		return companies;
-	}
-
-	public List<JobDto> getApplications() {
-		return applications;
-	}
-
-	public static Page<UserDetailsDto> convert(Page<User> users) {
-		return users.map(UserDetailsDto::new);
 	}
 }
