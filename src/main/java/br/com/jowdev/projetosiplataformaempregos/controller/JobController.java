@@ -9,6 +9,8 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.JobRecruiterDetailsDto;
+import br.com.jowdev.projetosiplataformaempregos.helper.UserHelper;
 import br.com.jowdev.projetosiplataformaempregos.repository.KnowledgeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.JobDetailsDto;
@@ -59,6 +60,9 @@ public class JobController {
 	
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private UserHelper userHelper;
 	
 	@PreAuthorize("hasAnyRole('RECRUITER', 'ADMIN')")
 	@PostMapping
@@ -89,6 +93,7 @@ public class JobController {
 			) {
 		try {
 			Page<Job> jobs = jobRepository.getJobsByFilter(knowledges, salary, title, page);
+
 			
 			return ResponseEntity.ok(jobs.map(JobDto::new));
 		} catch (IllegalArgumentException e) {
@@ -96,6 +101,18 @@ public class JobController {
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
+	}
+
+	@PreAuthorize("hasAnyRole('RECRUITER', 'ADMIN')")
+	@GetMapping("/created")
+	public ResponseEntity<Page<JobRecruiterDetailsDto>> getMyCreatedJobs(
+			@PageableDefault(sort = "id", direction = Direction.ASC) @Parameter(hidden = true) Pageable page,
+			@AuthenticationPrincipal User user
+	) {
+		return ResponseEntity.ok(
+				jobRepository.findByCompanyUserId(user.getId(), page)
+					.map(JobRecruiterDetailsDto::new)
+		);
 	}
 	
 	@GetMapping("/knowledge")

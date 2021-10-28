@@ -142,7 +142,7 @@ public class AuthController {
 					"Você requisitou uma troca de senha. Clique no link abaixo para reseta-lá. \n" +
 					uri.toString() + " \n\n Obrigado.");
 			
-			emailSender.send(message);
+//			emailSender.send(message);
 			
 			return ResponseEntity.ok("Email para troca de senha enviado!");
 		}
