@@ -1,11 +1,12 @@
-package br.com.jowdev.projetosiplataformaempregos.controller.dto;
+package br.com.jowdev.projetosiplataformaempregos.controller.dto.user;
 
-import java.util.List;
-
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.KnowledgeDto;
+import br.com.jowdev.projetosiplataformaempregos.models.Role;
+import br.com.jowdev.projetosiplataformaempregos.models.user.User;
 import org.springframework.data.domain.Page;
 
-import br.com.jowdev.projetosiplataformaempregos.models.Role;
-import br.com.jowdev.projetosiplataformaempregos.models.User;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserDto {
 
@@ -14,8 +15,9 @@ public class UserDto {
 	private String email;
 	private String cpf;
 	private String phone;
-	private List<Role> role;
+	private List<Role> roles;
 	private boolean emailVerified;
+	private List<UserKnowledgeDto> knowledges;
 
 	public UserDto(User user) {
 		this.id = user.getId();
@@ -24,7 +26,12 @@ public class UserDto {
 		this.cpf = user.getCpf();
 		this.phone = user.getPhone();
 		this.emailVerified = user.isEmailVerified();
-		this.setRole(user.getRoles());
+		this.setRoles(user.getRoles());
+		this.knowledges = user
+				.getKnowledges()
+				.stream()
+				.map(UserKnowledgeDto::new)
+				.collect(Collectors.toList());
 	}
 
 	public Long getId() {
@@ -47,12 +54,12 @@ public class UserDto {
 		return phone;
 	}
 
-	public List<Role> getRole() {
-		return role;
+	public List<Role> getRoles() {
+		return roles;
 	}
 
-	public void setRole(List<Role> role) {
-		this.role = role;
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 
 	public boolean isEmailVerified() {

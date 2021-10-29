@@ -1,12 +1,10 @@
 package br.com.jowdev.projetosiplataformaempregos.controller.form;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import br.com.jowdev.projetosiplataformaempregos.models.User;
-import br.com.jowdev.projetosiplataformaempregos.models.UserGender;
+import br.com.jowdev.projetosiplataformaempregos.models.user.User;
+import br.com.jowdev.projetosiplataformaempregos.models.user.UserGender;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.URL;

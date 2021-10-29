@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import br.com.jowdev.projetosiplataformaempregos.models.User;
+import br.com.jowdev.projetosiplataformaempregos.models.user.User;
 import br.com.jowdev.projetosiplataformaempregos.repository.UserRepository;
 
 @Service

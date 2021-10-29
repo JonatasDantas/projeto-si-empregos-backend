@@ -23,12 +23,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.CompanyDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.JobDto;
-import br.com.jowdev.projetosiplataformaempregos.controller.dto.UserDetailsDto;
-import br.com.jowdev.projetosiplataformaempregos.controller.dto.UserDto;
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.user.UserDetailsDto;
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.user.UserDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.form.CompanyForm;
 import br.com.jowdev.projetosiplataformaempregos.controller.form.UserUpdateForm;
 import br.com.jowdev.projetosiplataformaempregos.models.Company;
-import br.com.jowdev.projetosiplataformaempregos.models.User;
+import br.com.jowdev.projetosiplataformaempregos.models.user.User;
 import br.com.jowdev.projetosiplataformaempregos.repository.CompanyRepository;
 import br.com.jowdev.projetosiplataformaempregos.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Parameter;

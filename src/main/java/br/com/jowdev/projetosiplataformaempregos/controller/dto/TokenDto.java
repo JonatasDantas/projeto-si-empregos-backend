@@ -1,6 +1,7 @@
 package br.com.jowdev.projetosiplataformaempregos.controller.dto;
 
-import br.com.jowdev.projetosiplataformaempregos.models.User;
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.user.UserDto;
+import br.com.jowdev.projetosiplataformaempregos.models.user.User;
 
 public class TokenDto {
 	private String token;

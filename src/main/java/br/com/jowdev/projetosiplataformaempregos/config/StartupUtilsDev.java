@@ -1,12 +1,14 @@
 package br.com.jowdev.projetosiplataformaempregos.config;
 
+import br.com.jowdev.projetosiplataformaempregos.controller.form.SignupForm;
 import br.com.jowdev.projetosiplataformaempregos.models.Company;
 import br.com.jowdev.projetosiplataformaempregos.models.Job;
 import br.com.jowdev.projetosiplataformaempregos.models.Knowledge;
-import br.com.jowdev.projetosiplataformaempregos.repository.CompanyRepository;
-import br.com.jowdev.projetosiplataformaempregos.repository.JobRepository;
-import br.com.jowdev.projetosiplataformaempregos.repository.KnowledgeRepository;
-import br.com.jowdev.projetosiplataformaempregos.repository.UserRepository;
+import br.com.jowdev.projetosiplataformaempregos.models.user.KnowledgeLevel;
+import br.com.jowdev.projetosiplataformaempregos.models.user.User;
+import br.com.jowdev.projetosiplataformaempregos.models.user.UserGender;
+import br.com.jowdev.projetosiplataformaempregos.models.user.UserKnowledge;
+import br.com.jowdev.projetosiplataformaempregos.repository.*;
 import lombok.val;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +18,8 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 @Component
@@ -34,10 +38,18 @@ public class StartupUtilsDev{
 	UserRepository userRepository;
 
 	@Autowired
+	UserKnowledgeRepository userKnowledgeRepository;
+
+	@Autowired
 	JobRepository jobRepository;
 
+	@Autowired
+	RoleRepository roleRepository;
+
 	@EventListener(ContextRefreshedEvent.class)
+	@Transactional
 	public void doSomething() {
+
 		LOGGER.info("Aplicação iniciada");
 		val angularKnowledge = new Knowledge();
 		angularKnowledge.setName("Angular");
@@ -49,6 +61,34 @@ public class StartupUtilsDev{
 						springKnowledge
 				)
 		);
+
+		// Adiciona o Usuário Inicial
+		val userForm = SignupForm.builder()
+				.cpf("00000000191")
+				.email("admin@admin.com")
+				.firstName("Ademir")
+				.lastName("Ademilson")
+				.password("123456")
+				.phone("11987566523")
+				.gender(UserGender.Masculino)
+				.recruiter(true)
+				.build();
+
+		var user = userForm.convert(roleRepository);
+		user.setRoles(new ArrayList<>());
+
+		user = userRepository.save(user);
+		user.setRoles(roleRepository.findAll());
+
+
+
+		val userKnowledge = new UserKnowledge();
+		userKnowledge.setUser(user);
+		userKnowledge.setKnowledge(angularKnowledge);
+		userKnowledge.setKnowledgeLevel(KnowledgeLevel.EXPERT);
+		userKnowledge.setValidated(true);
+
+		userKnowledgeRepository.save(userKnowledge);
 
 		val company = new Company();
 		company.setName("Nubank");

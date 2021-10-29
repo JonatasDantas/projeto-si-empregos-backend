@@ -1,7 +1,6 @@
 package br.com.jowdev.projetosiplataformaempregos.controller;
 
 import java.net.URI;
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -11,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import br.com.jowdev.projetosiplataformaempregos.models.user.User;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +22,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,12 +32,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.jowdev.projetosiplataformaempregos.config.security.TokenService;
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.TokenDto;
-import br.com.jowdev.projetosiplataformaempregos.controller.dto.UserDetailsDto;
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.user.UserDetailsDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.form.LoginForm;
 import br.com.jowdev.projetosiplataformaempregos.controller.form.ResetPasswordForm;
 import br.com.jowdev.projetosiplataformaempregos.controller.form.SignupForm;
 import br.com.jowdev.projetosiplataformaempregos.models.PasswordResetToken;
-import br.com.jowdev.projetosiplataformaempregos.models.User;
 import br.com.jowdev.projetosiplataformaempregos.repository.PasswordResetTokenRepository;
 import br.com.jowdev.projetosiplataformaempregos.repository.RoleRepository;
 import br.com.jowdev.projetosiplataformaempregos.repository.UserRepository;

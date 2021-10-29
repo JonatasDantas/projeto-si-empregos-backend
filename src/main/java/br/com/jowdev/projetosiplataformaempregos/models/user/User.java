@@ -1,27 +1,22 @@
-package br.com.jowdev.projetosiplataformaempregos.models;
+package br.com.jowdev.projetosiplataformaempregos.models.user;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.transaction.Transactional;
 
+import br.com.jowdev.projetosiplataformaempregos.models.Company;
+import br.com.jowdev.projetosiplataformaempregos.models.Job;
+import br.com.jowdev.projetosiplataformaempregos.models.Role;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
+@Data
 @Table(name = "users")
 public class User implements UserDetails {
 	private static final long serialVersionUID = 1L;
@@ -41,6 +36,10 @@ public class User implements UserDetails {
 	private String cpf;
 	private String phone;
 	private boolean emailVerified = false;
+
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	private List<UserKnowledge> knowledges;
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private List<Role> roles = new ArrayList<>();
@@ -75,59 +74,6 @@ public class User implements UserDetails {
 		return this.roles;
 	}
 
-	@Override
-	public String getPassword() {
-		return this.password;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public UserGender getGender() {
-		return gender;
-	}
-
-	public void setGender(UserGender gender) {
-		this.gender = gender;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
 	public boolean isEmailVerified() {
 		return emailVerified;
 	}
@@ -136,33 +82,13 @@ public class User implements UserDetails {
 		this.emailVerified = emailVerified;
 	}
 
-	public List<Company> getCompanies() {
-		return companies;
-	}
-
-	public void setCompanies(List<Company> companies) {
-		this.companies = companies;
-	}
-
 	public List<Job> getJobApplications() {
 		return jobs;
-	}
-
-	public void setJobApplications(List<Job> jobApplications) {
-		this.jobs = jobApplications;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	@Override
 	public String getUsername() {
 		return this.email;
-	}
-
-	public List<Role> getRoles() {
-		return roles;
 	}
 
 	@Transactional
@@ -190,11 +116,4 @@ public class User implements UserDetails {
 		return true;
 	}
 
-	public String getProfilePic() {
-		return profilePic;
-	}
-
-	public void setProfilePic(String profilePic) {
-		this.profilePic = profilePic;
-	}
 }

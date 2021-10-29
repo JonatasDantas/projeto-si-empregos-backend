@@ -11,6 +11,7 @@ import javax.validation.Valid;
 
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.JobRecruiterDetailsDto;
 import br.com.jowdev.projetosiplataformaempregos.helper.UserHelper;
+import br.com.jowdev.projetosiplataformaempregos.models.user.User;
 import br.com.jowdev.projetosiplataformaempregos.repository.KnowledgeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -37,7 +38,7 @@ import br.com.jowdev.projetosiplataformaempregos.controller.form.JobForm;
 import br.com.jowdev.projetosiplataformaempregos.models.Job;
 import br.com.jowdev.projetosiplataformaempregos.models.Knowledge;
 import br.com.jowdev.projetosiplataformaempregos.models.SalaryRange;
-import br.com.jowdev.projetosiplataformaempregos.models.User;
+import br.com.jowdev.projetosiplataformaempregos.models.user.User;
 import br.com.jowdev.projetosiplataformaempregos.repository.CompanyRepository;
 import br.com.jowdev.projetosiplataformaempregos.repository.JobRepository;
 import br.com.jowdev.projetosiplataformaempregos.repository.UserRepository;

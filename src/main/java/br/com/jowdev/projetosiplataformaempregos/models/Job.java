@@ -1,5 +1,6 @@
 package br.com.jowdev.projetosiplataformaempregos.models;
 
+import br.com.jowdev.projetosiplataformaempregos.models.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Job {
+public class Job extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

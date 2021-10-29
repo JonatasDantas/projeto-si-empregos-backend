@@ -1,15 +1,17 @@
-package br.com.jowdev.projetosiplataformaempregos.controller.dto;
+package br.com.jowdev.projetosiplataformaempregos.controller.dto.user;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import br.com.jowdev.projetosiplataformaempregos.models.UserGender;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.CompanyDto;
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.JobDto;
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.KnowledgeDto;
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.RoleDto;
+import br.com.jowdev.projetosiplataformaempregos.models.user.User;
+import br.com.jowdev.projetosiplataformaempregos.models.user.UserGender;
 import lombok.Data;
-import org.springframework.data.domain.Page;
 
-import br.com.jowdev.projetosiplataformaempregos.models.User;
 
 @Data
 public class UserDetailsDto {
@@ -24,6 +26,8 @@ public class UserDetailsDto {
 	private List<RoleDto> roles;
 	private List<CompanyDto> companies;
 	private List<JobDto> applications;
+	private List<UserKnowledgeDto> knowledges;
+
 
 	public UserDetailsDto(User user) {
 		this.id = user.getId();
@@ -43,5 +47,11 @@ public class UserDetailsDto {
 		
 		this.applications = new ArrayList<>();
 		this.applications.addAll(user.getJobApplications().stream().map(JobDto::new).collect(Collectors.toList()));
+
+		this.knowledges = user
+				.getKnowledges()
+				.stream()
+				.map(UserKnowledgeDto::new)
+				.collect(Collectors.toList());
 	}
 }

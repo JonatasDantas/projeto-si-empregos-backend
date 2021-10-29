@@ -1,6 +1,6 @@
 package br.com.jowdev.projetosiplataformaempregos.helper;
 
-import br.com.jowdev.projetosiplataformaempregos.models.User;
+import br.com.jowdev.projetosiplataformaempregos.models.user.User;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;

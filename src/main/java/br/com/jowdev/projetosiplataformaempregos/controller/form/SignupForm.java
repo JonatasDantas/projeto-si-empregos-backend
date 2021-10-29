@@ -7,13 +7,15 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import lombok.Builder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import br.com.jowdev.projetosiplataformaempregos.models.Role;
-import br.com.jowdev.projetosiplataformaempregos.models.User;
-import br.com.jowdev.projetosiplataformaempregos.models.UserGender;
+import br.com.jowdev.projetosiplataformaempregos.models.user.User;
+import br.com.jowdev.projetosiplataformaempregos.models.user.UserGender;
 import br.com.jowdev.projetosiplataformaempregos.repository.RoleRepository;
 
+@Builder
 public class SignupForm {
 
 	@NotNull

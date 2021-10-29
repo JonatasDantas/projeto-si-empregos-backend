@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -19,6 +20,7 @@ public class JobDto {
 	private List<Knowledge> knowledges;
 	private String city;
 	private String companyLogo;
+	private LocalDateTime createdAt;
 
 	public JobDto(Job job) {
 		super();
@@ -29,5 +31,6 @@ public class JobDto {
 		this.knowledges = job.getKnowledges();
 		this.city = job.getCompany().getCity();
 		this.companyLogo = job.getCompany().getLogoUrl();
+		this.createdAt = job.getCreatedAt();
 	}
 }

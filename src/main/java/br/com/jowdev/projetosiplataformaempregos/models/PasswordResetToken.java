@@ -1,5 +1,7 @@
 package br.com.jowdev.projetosiplataformaempregos.models;
 
+import br.com.jowdev.projetosiplataformaempregos.models.user.User;
+
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;

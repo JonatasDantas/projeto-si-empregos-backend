@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import br.com.jowdev.projetosiplataformaempregos.models.PasswordResetToken;
-import br.com.jowdev.projetosiplataformaempregos.models.User;
+import br.com.jowdev.projetosiplataformaempregos.models.user.User;
 
 public class ResetPasswordForm {
 	@NotNull
