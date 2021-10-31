@@ -3,11 +3,13 @@ package br.com.jowdev.projetosiplataformaempregos.controller.dto.user;
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.KnowledgeDto;
 import br.com.jowdev.projetosiplataformaempregos.models.Role;
 import br.com.jowdev.projetosiplataformaempregos.models.user.User;
+import lombok.Data;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Data
 public class UserDto {
 
 	private Long id;
@@ -18,6 +20,9 @@ public class UserDto {
 	private List<Role> roles;
 	private boolean emailVerified;
 	private List<UserKnowledgeDto> knowledges;
+	private String city;
+	private String state;
+	private String biography;
 
 	public UserDto(User user) {
 		this.id = user.getId();
@@ -32,40 +37,10 @@ public class UserDto {
 				.stream()
 				.map(UserKnowledgeDto::new)
 				.collect(Collectors.toList());
+		this.state = user.getState();
+		this.city = user.getCity();
+		this.biography = user.getBiography();
 	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public List<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
-	}
-
-	public boolean isEmailVerified() {
-		return emailVerified;
-	}
-	
 	public static Page<UserDto> convert(Page<User> users) {
 		return users.map(UserDto::new);
 	}

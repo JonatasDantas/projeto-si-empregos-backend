@@ -62,33 +62,7 @@ public class StartupUtilsDev{
 				)
 		);
 
-		// Adiciona o Usuário Inicial
-		val userForm = SignupForm.builder()
-				.cpf("00000000191")
-				.email("admin@admin.com")
-				.firstName("Ademir")
-				.lastName("Ademilson")
-				.password("123456")
-				.phone("11987566523")
-				.gender(UserGender.Masculino)
-				.recruiter(true)
-				.build();
-
-		var user = userForm.convert(roleRepository);
-		user.setRoles(new ArrayList<>());
-
-		user = userRepository.save(user);
-		user.setRoles(roleRepository.findAll());
-
-
-
-		val userKnowledge = new UserKnowledge();
-		userKnowledge.setUser(user);
-		userKnowledge.setKnowledge(angularKnowledge);
-		userKnowledge.setKnowledgeLevel(KnowledgeLevel.EXPERT);
-		userKnowledge.setValidated(true);
-
-		userKnowledgeRepository.save(userKnowledge);
+		configureFirstUser(angularKnowledge);
 
 		val company = new Company();
 		company.setName("Nubank");
@@ -213,6 +187,35 @@ public class StartupUtilsDev{
 
 		jobRepository.saveAll(Arrays.asList(newJob, newJob2));
 
+	}
+
+	private void configureFirstUser(Knowledge angularKnowledge) {
+		// Adiciona o Usuário Inicial
+		val userForm = SignupForm.builder()
+				.cpf("00000000191")
+				.email("admin@admin.com")
+				.firstName("Ademir")
+				.lastName("Ademilson")
+				.password("123456")
+				.phone("11987566523")
+				.gender(UserGender.Masculino)
+				.recruiter(true)
+				.build();
+
+		var user = userForm.convert(roleRepository);
+		user.setRoles(new ArrayList<>());
+
+		user = userRepository.save(user);
+		user.setRoles(roleRepository.findAll());
+
+
+		val userKnowledge = new UserKnowledge();
+		userKnowledge.setUser(user);
+		userKnowledge.setKnowledge(angularKnowledge);
+		userKnowledge.setKnowledgeLevel(KnowledgeLevel.EXPERT);
+		userKnowledge.setValidated(true);
+
+		userKnowledgeRepository.save(userKnowledge);
 	}
 
 }

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,7 @@ public class JobRecruiterDetailsDto {
     private List<Knowledge> knowledges;
     private Long companyId;
     private List<UserDto> users;
+	private LocalDateTime createdAt;
 
     public JobRecruiterDetailsDto(Job job) {
         this.id = job.getId();
@@ -36,6 +38,7 @@ public class JobRecruiterDetailsDto {
                             .stream()
                             .map(e -> new UserDto(e))
                             .collect(Collectors.toList());
+        this.createdAt = job.getCreatedAt();
     }
 
 }

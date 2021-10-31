@@ -36,7 +36,12 @@ public class User implements UserDetails {
 	private String cpf;
 	private String phone;
 	private boolean emailVerified = false;
-
+	private String city;
+	private String state;
+	private String biography;
+	@Lob
+	@Column(name="full_biography", length=2147483647)
+	private String fullBiography;
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<UserKnowledge> knowledges;
