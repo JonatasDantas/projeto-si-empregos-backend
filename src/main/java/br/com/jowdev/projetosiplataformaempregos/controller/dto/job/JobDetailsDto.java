@@ -1,6 +1,7 @@
-package br.com.jowdev.projetosiplataformaempregos.controller.dto;
+package br.com.jowdev.projetosiplataformaempregos.controller.dto.job;
 
-import br.com.jowdev.projetosiplataformaempregos.models.Job;
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.CompanyDto;
+import br.com.jowdev.projetosiplataformaempregos.models.Job.Job;
 import br.com.jowdev.projetosiplataformaempregos.models.Knowledge;
 import lombok.AllArgsConstructor;
 import lombok.Data;

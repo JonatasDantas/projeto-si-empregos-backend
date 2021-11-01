@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.job.JobApplicationDto;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.CompanyDto;
-import br.com.jowdev.projetosiplataformaempregos.controller.dto.JobDto;
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.job.JobDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.user.UserDetailsDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.user.UserDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.form.CompanyForm;
@@ -112,12 +113,12 @@ public class UserController {
 	
 	@PreAuthorize("hasRole('ADMIN') or #authUser.getId() == #userId")
 	@GetMapping("/{userId}/jobs")
-	public List<JobDto> getJobApplications(@PathVariable Long userId, @PageableDefault(sort = "id", direction = Direction.ASC) Pageable page,
+	public List<JobApplicationDto> getJobApplications(@PathVariable Long userId, @PageableDefault(sort = "id", direction = Direction.ASC) Pageable page,
 			@AuthenticationPrincipal User authUser) {
 		Optional<User> user = userRepository.findById(userId);
 		
 		if (user.isPresent()) {
-			return user.get().getJobApplications().stream().map(JobDto::new).collect(Collectors.toList());
+			return user.get().getJobApplications().stream().map(JobApplicationDto::new).collect(Collectors.toList());
 		}
 		
 		return new ArrayList<>();

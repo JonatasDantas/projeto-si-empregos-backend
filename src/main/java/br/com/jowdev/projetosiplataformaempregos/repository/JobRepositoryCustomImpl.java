@@ -14,8 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import br.com.jowdev.projetosiplataformaempregos.models.Job;
-import br.com.jowdev.projetosiplataformaempregos.models.Knowledge;
+import br.com.jowdev.projetosiplataformaempregos.models.Job.Job;
 import br.com.jowdev.projetosiplataformaempregos.models.SalaryRange;
 
 public class JobRepositoryCustomImpl implements JobRepositoryCustom {

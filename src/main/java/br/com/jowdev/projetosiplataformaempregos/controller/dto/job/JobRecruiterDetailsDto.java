@@ -1,7 +1,7 @@
-package br.com.jowdev.projetosiplataformaempregos.controller.dto;
+package br.com.jowdev.projetosiplataformaempregos.controller.dto.job;
 
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.user.UserDto;
-import br.com.jowdev.projetosiplataformaempregos.models.Job;
+import br.com.jowdev.projetosiplataformaempregos.models.Job.Job;
 import br.com.jowdev.projetosiplataformaempregos.models.Knowledge;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +23,7 @@ public class JobRecruiterDetailsDto {
     private Float salary;
     private List<Knowledge> knowledges;
     private Long companyId;
-    private List<UserDto> users;
+    private List<JobApplicationDto> jobApplications;
 	private LocalDateTime createdAt;
 
     public JobRecruiterDetailsDto(Job job) {
@@ -34,9 +34,9 @@ public class JobRecruiterDetailsDto {
         this.salary = job.getSalary();
         this.knowledges = job.getKnowledges();
         this.companyId = job.getCompany().getId();
-        this.users = job.getUsers()
+        this.jobApplications = job.getJobApplications()
                             .stream()
-                            .map(e -> new UserDto(e))
+                            .map(JobApplicationDto::new)
                             .collect(Collectors.toList());
         this.createdAt = job.getCreatedAt();
     }

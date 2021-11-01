@@ -9,10 +9,13 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
-import br.com.jowdev.projetosiplataformaempregos.controller.dto.JobRecruiterDetailsDto;
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.job.JobApplicationDto;
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.job.JobRecruiterDetailsDto;
 import br.com.jowdev.projetosiplataformaempregos.helper.UserHelper;
+import br.com.jowdev.projetosiplataformaempregos.models.Job.JobApplication;
 import br.com.jowdev.projetosiplataformaempregos.models.user.User;
-import br.com.jowdev.projetosiplataformaempregos.repository.KnowledgeRepository;
+import br.com.jowdev.projetosiplataformaempregos.repository.*;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -32,16 +35,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.jowdev.projetosiplataformaempregos.controller.dto.JobDetailsDto;
-import br.com.jowdev.projetosiplataformaempregos.controller.dto.JobDto;
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.job.JobDetailsDto;
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.job.JobDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.form.JobForm;
-import br.com.jowdev.projetosiplataformaempregos.models.Job;
+import br.com.jowdev.projetosiplataformaempregos.models.Job.Job;
 import br.com.jowdev.projetosiplataformaempregos.models.Knowledge;
 import br.com.jowdev.projetosiplataformaempregos.models.SalaryRange;
-import br.com.jowdev.projetosiplataformaempregos.models.user.User;
-import br.com.jowdev.projetosiplataformaempregos.repository.CompanyRepository;
-import br.com.jowdev.projetosiplataformaempregos.repository.JobRepository;
-import br.com.jowdev.projetosiplataformaempregos.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
@@ -61,6 +60,9 @@ public class JobController {
 	
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private JobApplicationRepository jobApplicationRepository;
 
 	@Autowired
 	private UserHelper userHelper;
@@ -134,20 +136,22 @@ public class JobController {
 	}
 	
 	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-	@Transactional
 	@PostMapping("/{id}/apply")
-	public ResponseEntity<Boolean> applyJob(@PathVariable Long id, @AuthenticationPrincipal User authUser) {
+	public ResponseEntity<JobApplicationDto> applyJob(@PathVariable Long id, @AuthenticationPrincipal User authUser) {
 		Optional<Job> optional = jobRepository.findById(id);
 		
 		if (optional.isPresent()) {
 			Job job = optional.get();
 			User user = userRepository.findById(authUser.getId()).get();
-			List<User> candidates = job.getUsers();
-			
-			candidates.add(user);
-			job.setUsers(candidates);
+			val jobApplication = JobApplication.builder()
+					.job(job)
+					.approved(null)
+					.user(user)
+					.build();
 
-			return ResponseEntity.ok().build();
+			final val application = jobApplicationRepository.save(jobApplication);
+
+			return ResponseEntity.created(null).body(new JobApplicationDto(application));
 		}
 
 		return ResponseEntity.notFound().build();

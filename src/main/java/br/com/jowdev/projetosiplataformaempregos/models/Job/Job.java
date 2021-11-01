@@ -1,5 +1,8 @@
-package br.com.jowdev.projetosiplataformaempregos.models;
+package br.com.jowdev.projetosiplataformaempregos.models.Job;
 
+import br.com.jowdev.projetosiplataformaempregos.models.BaseEntity;
+import br.com.jowdev.projetosiplataformaempregos.models.Company;
+import br.com.jowdev.projetosiplataformaempregos.models.Knowledge;
 import br.com.jowdev.projetosiplataformaempregos.models.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,13 +36,7 @@ public class Job extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Company company;
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
-	@JoinTable(name = "job_users", 
-	joinColumns = {
-			@JoinColumn(name = "job_id", referencedColumnName = "id", nullable = false, updatable = false)},
-	inverseJoinColumns = {
-            @JoinColumn(name = "users_id", referencedColumnName = "id", nullable = false, updatable = false)}
-	)
-	private List<User> users = new ArrayList<>();
+	@OneToMany(mappedBy = "job")
+	private List<JobApplication> jobApplications = new ArrayList<>();
 
 }

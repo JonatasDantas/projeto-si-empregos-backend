@@ -4,7 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import br.com.jowdev.projetosiplataformaempregos.models.Job;
+import br.com.jowdev.projetosiplataformaempregos.models.Job.Job;
 
 public interface JobRepository extends JpaRepository<Job, Long>, JobRepositoryCustom {
 

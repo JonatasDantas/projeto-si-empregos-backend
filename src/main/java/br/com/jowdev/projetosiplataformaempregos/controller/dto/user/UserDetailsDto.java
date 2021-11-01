@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.CompanyDto;
-import br.com.jowdev.projetosiplataformaempregos.controller.dto.JobDto;
-import br.com.jowdev.projetosiplataformaempregos.controller.dto.KnowledgeDto;
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.job.JobApplicationDto;
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.job.JobDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.RoleDto;
 import br.com.jowdev.projetosiplataformaempregos.models.user.User;
 import br.com.jowdev.projetosiplataformaempregos.models.user.UserGender;
@@ -25,7 +25,7 @@ public class UserDetailsDto {
 	private boolean emailVerified;
 	private List<RoleDto> roles;
 	private List<CompanyDto> companies;
-	private List<JobDto> applications;
+	private List<JobApplicationDto> jobApplications;
 	private List<UserKnowledgeDto> knowledges;
 
 
@@ -45,8 +45,8 @@ public class UserDetailsDto {
 		this.companies = new ArrayList<>();
 		this.companies.addAll(user.getCompanies().stream().map(CompanyDto::new).collect(Collectors.toList()));
 		
-		this.applications = new ArrayList<>();
-		this.applications.addAll(user.getJobApplications().stream().map(JobDto::new).collect(Collectors.toList()));
+		this.jobApplications = new ArrayList<>();
+		this.jobApplications.addAll(user.getJobApplications().stream().map(JobApplicationDto::new).collect(Collectors.toList()));
 
 		this.knowledges = user
 				.getKnowledges()

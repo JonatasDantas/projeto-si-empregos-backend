@@ -2,10 +2,9 @@ package br.com.jowdev.projetosiplataformaempregos.config;
 
 import br.com.jowdev.projetosiplataformaempregos.controller.form.SignupForm;
 import br.com.jowdev.projetosiplataformaempregos.models.Company;
-import br.com.jowdev.projetosiplataformaempregos.models.Job;
+import br.com.jowdev.projetosiplataformaempregos.models.Job.Job;
 import br.com.jowdev.projetosiplataformaempregos.models.Knowledge;
 import br.com.jowdev.projetosiplataformaempregos.models.user.KnowledgeLevel;
-import br.com.jowdev.projetosiplataformaempregos.models.user.User;
 import br.com.jowdev.projetosiplataformaempregos.models.user.UserGender;
 import br.com.jowdev.projetosiplataformaempregos.models.user.UserKnowledge;
 import br.com.jowdev.projetosiplataformaempregos.repository.*;
@@ -198,6 +197,8 @@ public class StartupUtilsDev{
 				.lastName("Ademilson")
 				.password("123456")
 				.phone("11987566523")
+				.city("Rio de Janeiro")
+				.state("RJ")
 				.gender(UserGender.Masculino)
 				.recruiter(true)
 				.build();

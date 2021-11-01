@@ -8,15 +8,21 @@ import javax.persistence.*;
 import javax.transaction.Transactional;
 
 import br.com.jowdev.projetosiplataformaempregos.models.Company;
-import br.com.jowdev.projetosiplataformaempregos.models.Job;
+import br.com.jowdev.projetosiplataformaempregos.models.Job.Job;
+import br.com.jowdev.projetosiplataformaempregos.models.Job.JobApplication;
 import br.com.jowdev.projetosiplataformaempregos.models.Role;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "users")
 public class User implements UserDetails {
 	private static final long serialVersionUID = 1L;
@@ -52,27 +58,8 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<Company> companies = new ArrayList<>();
 
-	@ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
-	private List<Job> jobs = new ArrayList<>();
-
-	public User() {
-		super();
-	}
-
-	public User(String name, String email, String password, UserGender gender, String cpf, String phone,
-			boolean emailVerified, List<Role> roles, List<Company> companies, String profilePic) {
-		super();
-		this.name = name;
-		this.email = email;
-		this.password = password;
-		this.gender = gender;
-		this.cpf = cpf;
-		this.phone = phone;
-		this.emailVerified = emailVerified;
-		this.roles = roles;
-		this.companies = companies;
-		this.profilePic = profilePic;
-	}
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	private List<JobApplication> jobApplications = new ArrayList<>();
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -87,8 +74,8 @@ public class User implements UserDetails {
 		this.emailVerified = emailVerified;
 	}
 
-	public List<Job> getJobApplications() {
-		return jobs;
+	public List<JobApplication> getJobApplications() {
+		return jobApplications;
 	}
 
 	@Override

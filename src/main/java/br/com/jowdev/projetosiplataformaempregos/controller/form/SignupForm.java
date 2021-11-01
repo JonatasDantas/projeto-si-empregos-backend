@@ -8,6 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
+import lombok.Data;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import br.com.jowdev.projetosiplataformaempregos.models.Role;
@@ -16,123 +17,70 @@ import br.com.jowdev.projetosiplataformaempregos.models.user.UserGender;
 import br.com.jowdev.projetosiplataformaempregos.repository.RoleRepository;
 
 @Builder
+@Data
 public class SignupForm {
 
-	@NotNull
-	@NotEmpty
-	private String firstName;
+    @NotNull
+    @NotEmpty
+    private String firstName;
 
-	@NotNull
-	@NotEmpty
-	private String lastName;
+    @NotNull
+    @NotEmpty
+    private String lastName;
 
-	@Email
-	private String email;
+    @Email
+    private String email;
 
-	@NotNull
-	@NotEmpty
-	private String password;
+    @NotNull
+    @NotEmpty
+    private String password;
 
-	@NotNull
-	private UserGender gender;
+    @NotNull
+    private UserGender gender;
 
-	@NotNull
-	@NotEmpty
-	private String cpf;
+    @NotNull
+    @NotEmpty
+    private String cpf;
 
-	@NotNull
-	@NotEmpty
-	private String phone;
+    @NotNull
+    @NotEmpty
+    private String phone;
 
-	@NotNull
-	private boolean recruiter;
+    @NotNull
+    private boolean recruiter;
 
-	private String profilePic;
+    @NotNull
+    private String state;
 
-	public String getFirstName() {
-		return firstName;
-	}
+    @NotNull
+    private String city;
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public User convert(RoleRepository roleRepository) {
+        List<Role> roles;
 
-	public String getLastName() {
-		return lastName;
-	}
+        if (isRecruiter()) {
+            roles = roleRepository.findByName("ROLE_RECRUITER");
+        } else {
+            roles = roleRepository.findByName("ROLE_USER");
+        }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+        String name = firstName.trim() + " " + lastName.trim();
+        String hashedPassword = new BCryptPasswordEncoder().encode(password);
 
-	public String getEmail() {
-		return email;
-	}
+        return User.builder()
+                .cpf(cpf)
+                .city(city)
+                .state(state)
+                .email(email)
+                .emailVerified(false)
+                .gender(gender)
+                .name(name)
+                .password(hashedPassword)
+                .profilePic("")
+                .phone(phone)
+                .roles(roles)
+                .build();
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public UserGender getGender() {
-		return gender;
-	}
-
-	public void setGender(UserGender gender) {
-		this.gender = gender;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public boolean isRecruiter() {
-		return recruiter;
-	}
-
-	public void setRecruiter(boolean recruiter) {
-		this.recruiter = recruiter;
-	}
-
-	public User convert(RoleRepository roleRepository) {
-		List<Role> roles;
-
-		if (isRecruiter()) {
-			roles = roleRepository.findByName("ROLE_RECRUITER");
-		} else {
-			roles = roleRepository.findByName("ROLE_USER");			
-		}
-
-		String name = firstName.trim() + " " + lastName.trim();
-		String hashedPassword = new BCryptPasswordEncoder().encode(password);
-		
-		return new User(name, email, hashedPassword, gender, cpf, phone, false, roles, new ArrayList<>(), profilePic);
-	}
-
-	public String getProfilePic() {
-		return profilePic;
-	}
-
-	public void setProfilePic(String profilePic) {
-		this.profilePic = profilePic;
-	}
 }

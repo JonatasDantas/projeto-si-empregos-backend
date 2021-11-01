@@ -1,5 +1,6 @@
 package br.com.jowdev.projetosiplataformaempregos.models;
 
+import br.com.jowdev.projetosiplataformaempregos.models.Job.Job;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

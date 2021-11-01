@@ -8,14 +8,13 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import br.com.jowdev.projetosiplataformaempregos.models.Company;
-import br.com.jowdev.projetosiplataformaempregos.models.Job;
+import br.com.jowdev.projetosiplataformaempregos.models.Job.Job;
 import br.com.jowdev.projetosiplataformaempregos.models.Knowledge;
 import br.com.jowdev.projetosiplataformaempregos.repository.CompanyRepository;
 import br.com.jowdev.projetosiplataformaempregos.repository.KnowledgeRepository;
 import lombok.Data;
 import lombok.val;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
 @Data
