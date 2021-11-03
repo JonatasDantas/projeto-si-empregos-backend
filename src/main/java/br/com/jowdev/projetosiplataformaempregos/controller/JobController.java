@@ -40,6 +40,7 @@ import br.com.jowdev.projetosiplataformaempregos.controller.dto.job.JobDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.form.JobForm;
 import br.com.jowdev.projetosiplataformaempregos.models.Job.Job;
 import br.com.jowdev.projetosiplataformaempregos.models.Knowledge;
+import br.com.jowdev.projetosiplataformaempregos.models.Occupation;
 import br.com.jowdev.projetosiplataformaempregos.models.SalaryRange;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -104,6 +105,17 @@ public class JobController {
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
+	}
+	
+	@GetMapping("/occupations")
+	public Map<String, String> findOccupations() {
+		Map<String, String> occupations = new HashMap<String, String>();
+		
+		for(Occupation occupation : Occupation.values()) {
+			occupations.put(occupation.name(), occupation.toString());
+		}
+
+		return occupations;
 	}
 
 	@PreAuthorize("hasAnyRole('RECRUITER', 'ADMIN')")
