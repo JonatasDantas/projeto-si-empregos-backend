@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 
 import br.com.jowdev.projetosiplataformaempregos.models.Company;
 
-@Data
+@Data 
 public class CompanyDto {
 
 	private Long id;

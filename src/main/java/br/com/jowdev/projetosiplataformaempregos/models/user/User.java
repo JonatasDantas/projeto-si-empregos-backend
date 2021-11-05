@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.transaction.Transactional;
 
 import br.com.jowdev.projetosiplataformaempregos.models.Company;
+import br.com.jowdev.projetosiplataformaempregos.models.Experience;
 import br.com.jowdev.projetosiplataformaempregos.models.Job.Job;
 import br.com.jowdev.projetosiplataformaempregos.models.Job.JobApplication;
 import br.com.jowdev.projetosiplataformaempregos.models.Role;
@@ -57,6 +58,9 @@ public class User implements UserDetails {
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<Company> companies = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+	private List<Experience> experience = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<JobApplication> jobApplications = new ArrayList<>();

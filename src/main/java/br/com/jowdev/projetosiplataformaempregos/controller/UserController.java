@@ -85,6 +85,7 @@ public class UserController {
 		
 		if (optional.isPresent()) {
 			User user = form.update(optional.get());
+			userRepository.save(user);
 			return ResponseEntity.ok(new UserDetailsDto(user));
 		}
 		

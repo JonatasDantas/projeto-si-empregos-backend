@@ -2,6 +2,7 @@ package br.com.jowdev.projetosiplataformaempregos.config;
 
 import br.com.jowdev.projetosiplataformaempregos.controller.form.SignupForm;
 import br.com.jowdev.projetosiplataformaempregos.models.Company;
+import br.com.jowdev.projetosiplataformaempregos.models.Experience;
 import br.com.jowdev.projetosiplataformaempregos.models.Job.Job;
 import br.com.jowdev.projetosiplataformaempregos.models.Knowledge;
 import br.com.jowdev.projetosiplataformaempregos.models.user.KnowledgeLevel;
@@ -32,6 +33,9 @@ public class StartupUtilsDev{
 
 	@Autowired
 	CompanyRepository companyRepository;
+	
+	@Autowired
+	ExperienceRepository experienceRepository;
 
 	@Autowired
 	UserRepository userRepository;
@@ -185,6 +189,16 @@ public class StartupUtilsDev{
 		newJob2.setSalary(5000f);
 
 		jobRepository.saveAll(Arrays.asList(newJob, newJob2));
+		
+		
+		val experience = new Experience();
+		experience.setCompanyName("Hefest S/A");
+		experience.setOffice("Analista de RH");
+		experience.setInitialDate("05/19");
+		experience.setEndDate("02/21");
+		experience.setUser(userRepository.findAll().get(0));
+		
+		experienceRepository.saveAll(Arrays.asList(experience));
 
 	}
 

@@ -2,7 +2,9 @@ package br.com.jowdev.projetosiplataformaempregos.controller.form;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
+import java.util.List;
 
+import br.com.jowdev.projetosiplataformaempregos.models.Experience;
 import br.com.jowdev.projetosiplataformaempregos.models.user.User;
 import br.com.jowdev.projetosiplataformaempregos.models.user.UserGender;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -29,6 +31,10 @@ public class UserUpdateForm {
 
 	@Size(min = 10, max = 11)
 	private String phone;
+	
+	private String biography;
+	
+	private List<Experience> experience;
 
 	
 	public User update(User user) {
@@ -49,6 +55,16 @@ public class UserUpdateForm {
 
 		if(profilePic != null)
 			user.setProfilePic(profilePic);
+		
+		if(biography != null)
+			user.setBiography(biography);
+		
+		if(experience != null) {
+			List<Experience> newexperience = user.getExperience();
+			newexperience.addAll(experience);
+			user.setExperience(newexperience);
+		}
+			
 
 		return user;
 	}
