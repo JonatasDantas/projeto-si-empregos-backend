@@ -59,7 +59,7 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<Company> companies = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
 	private List<Experience> experience = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)

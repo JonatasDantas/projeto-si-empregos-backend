@@ -79,6 +79,10 @@ public class SignupForm {
                 .profilePic("")
                 .phone(phone)
                 .roles(roles)
+                .companies(new ArrayList<>())
+                .experience(new ArrayList<>())
+                .jobApplications(new ArrayList<>())
+                .knowledges(new ArrayList<>())
                 .build();
     }
 

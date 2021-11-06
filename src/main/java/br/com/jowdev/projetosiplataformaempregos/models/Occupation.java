@@ -1,6 +1,13 @@
 package br.com.jowdev.projetosiplataformaempregos.models;
 
 public enum Occupation {
+	Arquitetura,
+	FrontEnd,
+	Backend,
+	Analista,
+	Infraestrutura,
+	
+	/*
 	Tecnologia,
 	Engenharia,
 	Saúde,
@@ -12,4 +19,5 @@ public enum Occupation {
 	Administração,
 	Educação,
 	Industria
+	*/
 }

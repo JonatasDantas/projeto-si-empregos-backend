@@ -66,6 +66,7 @@ public class StartupUtilsDev{
 		);
 
 		configureFirstUser(angularKnowledge);
+		configureSecondUser(angularKnowledge);
 
 		val company = new Company();
 		company.setName("Nubank");
@@ -215,6 +216,37 @@ public class StartupUtilsDev{
 				.state("RJ")
 				.gender(UserGender.Masculino)
 				.recruiter(true)
+				.build();
+
+		var user = userForm.convert(roleRepository);
+		user.setRoles(new ArrayList<>());
+
+		user = userRepository.save(user);
+		user.setRoles(roleRepository.findAll());
+
+
+		val userKnowledge = new UserKnowledge();
+		userKnowledge.setUser(user);
+		userKnowledge.setKnowledge(angularKnowledge);
+		userKnowledge.setKnowledgeLevel(KnowledgeLevel.EXPERT);
+		userKnowledge.setValidated(true);
+
+		userKnowledgeRepository.save(userKnowledge);
+	}
+	
+	private void configureSecondUser(Knowledge angularKnowledge) {
+		// Adiciona o Usuário Inicial
+		val userForm = SignupForm.builder()
+				.cpf("00000000222")
+				.email("usuario@usuario.com")
+				.firstName("Joelson")
+				.lastName("Joenilson")
+				.password("123456")
+				.phone("11987566599")
+				.city("Rio de Janeiro")
+				.state("RJ")
+				.gender(UserGender.Masculino)
+				.recruiter(false)
 				.build();
 
 		var user = userForm.convert(roleRepository);

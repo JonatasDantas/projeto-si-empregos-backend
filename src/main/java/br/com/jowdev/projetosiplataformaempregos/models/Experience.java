@@ -46,5 +46,6 @@ public class Experience {
 		this.companyName = companyName;
 		this.initialDate = initialDate;
 		this.endDate = endDate;
+		this.user = user;
 	}
 }

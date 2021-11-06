@@ -31,6 +31,7 @@ import br.com.jowdev.projetosiplataformaempregos.controller.form.UserUpdateForm;
 import br.com.jowdev.projetosiplataformaempregos.models.Company;
 import br.com.jowdev.projetosiplataformaempregos.models.user.User;
 import br.com.jowdev.projetosiplataformaempregos.repository.CompanyRepository;
+import br.com.jowdev.projetosiplataformaempregos.repository.ExperienceRepository;
 import br.com.jowdev.projetosiplataformaempregos.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -46,6 +47,9 @@ public class UserController {
 	
 	@Autowired
 	private CompanyRepository companyRepository;
+	
+	@Autowired
+	private ExperienceRepository experienceRepository;
 
 
 	@GetMapping("/me")
@@ -84,9 +88,11 @@ public class UserController {
 		Optional<User> optional = userRepository.findById(id);
 		
 		if (optional.isPresent()) {
-			User user = form.update(optional.get());
+			User user = form.update(optional.get(), experienceRepository);
 			userRepository.save(user);
-			return ResponseEntity.ok(new UserDetailsDto(user));
+			
+			Optional<User> updatedUser = userRepository.findById(id);
+			return ResponseEntity.ok(new UserDetailsDto(updatedUser.get()));
 		}
 		
 		return ResponseEntity.notFound().build();
