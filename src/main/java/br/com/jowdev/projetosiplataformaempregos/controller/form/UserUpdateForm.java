@@ -83,15 +83,18 @@ public class UserUpdateForm {
 			
 			experience.forEach(item -> {
 				System.out.println("item experince: " + item);
-				Experience newExperience = new Experience(item.getOffice(), item.getCompanyName(), item.getInitialDate(), item.getEndDate(), user);
-				
-				System.out.println("Experience to add " + newExperience);
-				experienceRepository.save(newExperience);
-				
-				newExperiences.add(newExperience);
+				if (item.getId() == null) {
+					Experience newExperience = new Experience(item.getOffice(), item.getCompanyName(), item.getInitialDate(), item.getEndDate(), user);
+
+					experienceRepository.save(newExperience);
+					
+					newExperiences.add(newExperience);					
+				} else {
+					newExperiences.add(item);
+				}
 			});
 			
-			user.setExperience(newExperiences);
+			//user.setExperience(newExperiences);
 		}
 
 		return user;
