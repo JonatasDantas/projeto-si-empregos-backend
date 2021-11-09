@@ -13,7 +13,6 @@ import br.com.jowdev.projetosiplataformaempregos.models.user.User;
 import br.com.jowdev.projetosiplataformaempregos.models.user.UserGender;
 import lombok.Data;
 
-
 @Data
 public class UserDetailsDto {
 	private Long id;
@@ -30,7 +29,7 @@ public class UserDetailsDto {
 	private List<JobApplicationDto> jobApplications;
 	private List<UserKnowledgeDto> knowledges;
 	private List<ExperienceDto> experience;
-
+	private List<CertificateDto> certificates;
 
 	public UserDetailsDto(User user) {
 		this.id = user.getId();
@@ -48,19 +47,17 @@ public class UserDetailsDto {
 
 		this.companies = new ArrayList<>();
 		this.companies.addAll(user.getCompanies().stream().map(CompanyDto::new).collect(Collectors.toList()));
-		
+
 		this.experience = new ArrayList<>();
 		this.experience.addAll(user.getExperience().stream().map(ExperienceDto::new).collect(Collectors.toList()));
-		
-		this.jobApplications = new ArrayList<>();
-		this.jobApplications.addAll(user.getJobApplications().stream().map(JobApplicationDto::new).collect(Collectors.toList()));
 
-		this.knowledges = user
-				.getKnowledges()
-				.stream()
-				.map(UserKnowledgeDto::new)
-				.collect(Collectors.toList());
-		
-	
+		this.jobApplications = new ArrayList<>();
+		this.jobApplications
+				.addAll(user.getJobApplications().stream().map(JobApplicationDto::new).collect(Collectors.toList()));
+
+		this.knowledges = user.getKnowledges().stream().map(UserKnowledgeDto::new).collect(Collectors.toList());
+
+		this.certificates = user.getCertificates().stream().map(CertificateDto::new).collect(Collectors.toList());
+
 	}
 }

@@ -83,6 +83,7 @@ public class SignupForm {
                 .experience(new ArrayList<>())
                 .jobApplications(new ArrayList<>())
                 .knowledges(new ArrayList<>())
+                .certificates(new ArrayList<>())
                 .build();
     }
 

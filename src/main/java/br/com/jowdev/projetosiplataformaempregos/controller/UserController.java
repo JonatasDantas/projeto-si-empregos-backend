@@ -30,6 +30,7 @@ import br.com.jowdev.projetosiplataformaempregos.controller.form.CompanyForm;
 import br.com.jowdev.projetosiplataformaempregos.controller.form.UserUpdateForm;
 import br.com.jowdev.projetosiplataformaempregos.models.Company;
 import br.com.jowdev.projetosiplataformaempregos.models.user.User;
+import br.com.jowdev.projetosiplataformaempregos.repository.CertificateRepository;
 import br.com.jowdev.projetosiplataformaempregos.repository.CompanyRepository;
 import br.com.jowdev.projetosiplataformaempregos.repository.ExperienceRepository;
 import br.com.jowdev.projetosiplataformaempregos.repository.UserRepository;
@@ -50,6 +51,9 @@ public class UserController {
 	
 	@Autowired
 	private ExperienceRepository experienceRepository;
+	
+	@Autowired
+	private CertificateRepository certificateRepository;
 
 
 	@GetMapping("/me")
@@ -88,7 +92,7 @@ public class UserController {
 		Optional<User> optional = userRepository.findById(id);
 		
 		if (optional.isPresent()) {
-			User user = form.update(optional.get(), experienceRepository);
+			User user = form.update(optional.get(), experienceRepository, certificateRepository);
 			userRepository.save(user);
 			
 			Optional<User> updatedUser = userRepository.findById(id);

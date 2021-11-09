@@ -8,8 +8,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.jowdev.projetosiplataformaempregos.models.Experience;
+import br.com.jowdev.projetosiplataformaempregos.models.user.Certificate;
 import br.com.jowdev.projetosiplataformaempregos.models.user.User;
 import br.com.jowdev.projetosiplataformaempregos.models.user.UserGender;
+import br.com.jowdev.projetosiplataformaempregos.repository.CertificateRepository;
 import br.com.jowdev.projetosiplataformaempregos.repository.ExperienceRepository;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -40,8 +42,10 @@ public class UserUpdateForm {
 	private String biography;
 
 	private List<Experience> experience;
+	
+	private List<Certificate> certificates;
 
-	public User update(User user, ExperienceRepository experienceRepository) {
+	public User update(User user, ExperienceRepository experienceRepository, CertificateRepository certificateRepository) {
 		if (name != null)
 			user.setName(name.trim());
 
@@ -64,21 +68,6 @@ public class UserUpdateForm {
 			user.setBiography(biography);
 
 		if (experience != null) {
-			/*
-			System.out.println("current user");
-			System.out.println("has experience" + experience.size());
-
-			List<Experience> newexperience = new ArrayList<>();
-			
-			experience.forEach(item -> {
-				System.out.println("experience item" + item);
-				item.setUser(user);
-				newexperience.add(item);
-			});
-			
-			System.out.print("new experience" + newexperience);
-			*/
-			
 			List<Experience> newExperiences = new ArrayList<Experience>();
 			
 			experience.forEach(item -> {
@@ -95,6 +84,22 @@ public class UserUpdateForm {
 			});
 			
 			//user.setExperience(newExperiences);
+		}
+		
+		if (certificates != null) {
+			List<Certificate> newCertificates = new ArrayList<>();
+			
+			certificates.forEach(item -> {
+				if (item.getId() == null) {
+					Certificate newCertificate = new Certificate(user, item.getName(), item.getUrl());
+
+					certificateRepository.save(newCertificate);
+					
+					newCertificates.add(newCertificate);
+				} else {
+					newCertificates.add(item);
+				}
+			});
 		}
 
 		return user;
