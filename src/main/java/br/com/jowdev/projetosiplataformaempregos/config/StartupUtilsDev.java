@@ -62,9 +62,25 @@ public class StartupUtilsDev{
 		LOGGER.info("Aplicação iniciada");
 		val angularKnowledge = new Knowledge();
 		angularKnowledge.setName("Angular");
+		angularKnowledge.setDescription("Angular é um framework Javascript criado pela google, com o objetivo de gerar Single Page Applications modernas de forma confiável usando a linguagem Typescript");
 
 		List<Contents> angularContents = new ArrayList<>();
-		angularContents.add(new Contents(ContentType.PLAYLIST, "Curso Angular 9", "https://www.youtube.com/playlist?list=PLdPPE0hUkt0rPyAkdhHIIquKbwrGUkvw3", angularKnowledge, "Angular da Loiane", ""));
+
+		angularContents.add(new Contents(
+				ContentType.PLAYLIST,
+				"Curso Angular 9",
+				"https://www.youtube.com/playlist?list=PLdPPE0hUkt0rPyAkdhHIIquKbwrGUkvw3",
+				angularKnowledge,
+				"Curso completo de Angular 100% gratuito presente no youtube, oferecido por Cod3r Cursos",
+				""));
+
+		angularContents.add(new Contents(
+				ContentType.PODCAST,
+				"Angular vs React – Hipsters #142",
+				"https://hipsters.tech/angular-vs-react-hipsters-142/",
+				angularKnowledge,
+				null,
+				""));
 		
 		angularContents = contentsRepository.saveAll(angularContents);
 		
@@ -72,6 +88,7 @@ public class StartupUtilsDev{
 
 		val springKnowledge = new Knowledge();
 		springKnowledge.setName("Spring Boot");
+		springKnowledge.setDescription("Spring Boot é uma framework de Desenvolvimento backend feito para a Java Virtual Machine, ele provê ferramentas para a construção de aplicações robustas que seguem boas práticas e padrões de projeto como MVC e IoC. ");
 		knowledgeRepository.saveAll(
 				Arrays.asList(
 						angularKnowledge,

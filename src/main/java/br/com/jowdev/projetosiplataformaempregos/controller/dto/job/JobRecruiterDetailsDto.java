@@ -1,5 +1,6 @@
 package br.com.jowdev.projetosiplataformaempregos.controller.dto.job;
 
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.KnowledgeDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.user.UserDto;
 import br.com.jowdev.projetosiplataformaempregos.models.Job.Job;
 import br.com.jowdev.projetosiplataformaempregos.models.Knowledge;
@@ -21,7 +22,7 @@ public class JobRecruiterDetailsDto {
     private String description;
     private String fullDescription;
     private Float salary;
-    private List<Knowledge> knowledges;
+    private List<KnowledgeDto> knowledges;
     private Long companyId;
     private List<JobApplicationDto> jobApplications;
 	private LocalDateTime createdAt;
@@ -32,7 +33,7 @@ public class JobRecruiterDetailsDto {
         this.description = job.getDescription();
         this.fullDescription = job.getFullDescription();
         this.salary = job.getSalary();
-        this.knowledges = job.getKnowledges();
+        this.knowledges = job.getKnowledges().stream().map(KnowledgeDto::new).collect(Collectors.toList());
         this.companyId = job.getCompany().getId();
         this.jobApplications = job.getJobApplications()
                             .stream()

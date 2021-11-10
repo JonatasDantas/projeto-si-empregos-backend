@@ -16,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+//import org.springframework.mail.SimpleMailMessage;
+//import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -61,9 +61,9 @@ public class AuthController {
 	@Autowired
 	private PasswordResetTokenRepository passwordResetTokenRepository;
 	
-    @Autowired
-    private JavaMailSender emailSender;
-    
+//    @Autowired
+//    private JavaMailSender emailSender;
+//
 	@Value("${spring.mail.username}")
 	private String mailSender;
 
@@ -128,17 +128,17 @@ public class AuthController {
 			PasswordResetToken entity = new PasswordResetToken(token, user.get());
 			
 			passwordResetTokenRepository.save(entity);
-
-			SimpleMailMessage message = new SimpleMailMessage();
-			message.setFrom(mailSender);
-			message.setTo(email);
-			message.setSubject("Troca de senha - Plataforma Empregos");
+//
+//			SimpleMailMessage message = new SimpleMailMessage();
+//			message.setFrom(mailSender);
+//			message.setTo(email);
+//			message.setSubject("Troca de senha - Plataforma Empregos");
 			
 			URI uri = uriBuilder.port(80).path("/reset-password").queryParam("token", entity.getToken()).build().toUri();
 			
-			message.setText("Olá " + user.get().getName() + ", \n\n" +
-					"Você requisitou uma troca de senha. Clique no link abaixo para reseta-lá. \n" +
-					uri.toString() + " \n\n Obrigado.");
+//			message.setText("Olá " + user.get().getName() + ", \n\n" +
+//					"Você requisitou uma troca de senha. Clique no link abaixo para reseta-lá. \n" +
+//					uri.toString() + " \n\n Obrigado.");
 			
 //			emailSender.send(message);
 			

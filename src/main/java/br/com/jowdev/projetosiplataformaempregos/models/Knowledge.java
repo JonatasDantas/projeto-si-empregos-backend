@@ -17,7 +17,9 @@ public class Knowledge {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
 	private String name;
+	private String description;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Job> jobs;

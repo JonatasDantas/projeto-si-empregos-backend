@@ -11,11 +11,13 @@ import lombok.Data;
 public class KnowledgeDto {
     private Long id;
     private String name;
-    private List<ContentsDto> dto;
+    private String description;
+    private List<ContentsDto> contents;
 
     public KnowledgeDto(Knowledge knowledge) {
         this.id = knowledge.getId();
         this.name = knowledge.getName();
-        this.dto = knowledge.getContents().stream().map(ContentsDto::new).collect(Collectors.toList());
+        this.description = knowledge.getDescription();
+        this.contents = knowledge.getContents().stream().map(ContentsDto::new).collect(Collectors.toList());
     }
 }
