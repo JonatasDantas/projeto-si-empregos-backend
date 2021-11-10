@@ -30,15 +30,19 @@ public class Contents {
 	
 	private String title;
 	private String url;
+	private String imageUrl;
+	private String description;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Knowledge knowledge;
 	
-	public Contents(ContentType contentType, String title, String url, Knowledge knowledge) {
+	public Contents(ContentType contentType, String title, String url, Knowledge knowledge, String description, String imageUrl) {
 		super();
 		this.contentType = contentType;
 		this.title = title;
 		this.url = url;
 		this.knowledge = knowledge;
+		this.description = description;
+		this.imageUrl = imageUrl;
 	}
 }

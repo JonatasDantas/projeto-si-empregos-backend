@@ -64,7 +64,7 @@ public class StartupUtilsDev{
 		angularKnowledge.setName("Angular");
 
 		List<Contents> angularContents = new ArrayList<>();
-		angularContents.add(new Contents(ContentType.PLAYLIST, "Curso Angular 9", "https://www.youtube.com/playlist?list=PLdPPE0hUkt0rPyAkdhHIIquKbwrGUkvw3", angularKnowledge));
+		angularContents.add(new Contents(ContentType.PLAYLIST, "Curso Angular 9", "https://www.youtube.com/playlist?list=PLdPPE0hUkt0rPyAkdhHIIquKbwrGUkvw3", angularKnowledge, "Angular da Loiane", ""));
 		
 		angularContents = contentsRepository.saveAll(angularContents);
 		
