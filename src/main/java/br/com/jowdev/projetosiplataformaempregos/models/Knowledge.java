@@ -21,5 +21,7 @@ public class Knowledge {
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Job> jobs;
-
+	
+	@OneToMany(fetch = FetchType.LAZY)
+	private List<Contents> contents;
 }

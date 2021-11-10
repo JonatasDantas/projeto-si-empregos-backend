@@ -2,6 +2,8 @@ package br.com.jowdev.projetosiplataformaempregos.config;
 
 import br.com.jowdev.projetosiplataformaempregos.controller.form.SignupForm;
 import br.com.jowdev.projetosiplataformaempregos.models.Company;
+import br.com.jowdev.projetosiplataformaempregos.models.ContentType;
+import br.com.jowdev.projetosiplataformaempregos.models.Contents;
 import br.com.jowdev.projetosiplataformaempregos.models.Experience;
 import br.com.jowdev.projetosiplataformaempregos.models.Job.Job;
 import br.com.jowdev.projetosiplataformaempregos.models.Knowledge;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Component
 @Profile("dev")
@@ -48,6 +51,9 @@ public class StartupUtilsDev{
 
 	@Autowired
 	RoleRepository roleRepository;
+	
+	@Autowired
+	ContentsRepository contentsRepository;
 
 	@EventListener(ContextRefreshedEvent.class)
 	@Transactional
@@ -56,6 +62,14 @@ public class StartupUtilsDev{
 		LOGGER.info("Aplicação iniciada");
 		val angularKnowledge = new Knowledge();
 		angularKnowledge.setName("Angular");
+
+		List<Contents> angularContents = new ArrayList<>();
+		angularContents.add(new Contents(ContentType.PLAYLIST, "Curso Angular 9", "https://www.youtube.com/playlist?list=PLdPPE0hUkt0rPyAkdhHIIquKbwrGUkvw3", angularKnowledge));
+		
+		angularContents = contentsRepository.saveAll(angularContents);
+		
+		angularKnowledge.setContents(angularContents);
+
 		val springKnowledge = new Knowledge();
 		springKnowledge.setName("Spring Boot");
 		knowledgeRepository.saveAll(

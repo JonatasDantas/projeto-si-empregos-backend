@@ -5,10 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.KnowledgeDto;
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.job.ContentsDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.job.JobApplicationDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.job.JobRecruiterDetailsDto;
 import br.com.jowdev.projetosiplataformaempregos.helper.UserHelper;
@@ -39,6 +42,7 @@ import br.com.jowdev.projetosiplataformaempregos.controller.dto.job.JobDetailsDt
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.job.JobDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.form.JobForm;
 import br.com.jowdev.projetosiplataformaempregos.models.Job.Job;
+import br.com.jowdev.projetosiplataformaempregos.models.Contents;
 import br.com.jowdev.projetosiplataformaempregos.models.Knowledge;
 import br.com.jowdev.projetosiplataformaempregos.models.Occupation;
 import br.com.jowdev.projetosiplataformaempregos.models.SalaryRange;
@@ -52,13 +56,13 @@ public class JobController {
 
 	@Autowired
 	private JobRepository jobRepository;
-	
+
 	@Autowired
 	private CompanyRepository companyRepository;
 
 	@Autowired
 	private KnowledgeRepository knowledgeRepository;
-	
+
 	@Autowired
 	private UserRepository userRepository;
 
@@ -67,7 +71,7 @@ public class JobController {
 
 	@Autowired
 	private UserHelper userHelper;
-	
+
 	@PreAuthorize("hasAnyRole('RECRUITER', 'ADMIN')")
 	@PostMapping
 	public ResponseEntity<JobDetailsDto> create(@RequestBody @Valid JobForm form, UriComponentsBuilder uriBuilder) {
@@ -77,28 +81,27 @@ public class JobController {
 		URI uri = uriBuilder.path("/jobs/{id}").buildAndExpand(job.getId()).toUri();
 		return ResponseEntity.created(uri).body(new JobDetailsDto(job));
 	}
-	
+
 	@GetMapping("/{id}")
 	public ResponseEntity<JobDetailsDto> details(@PathVariable Long id) {
 		Optional<Job> optional = jobRepository.findById(id);
-		
+
 		if (optional.isPresent()) {
 			return ResponseEntity.ok(new JobDetailsDto(optional.get()));
 		}
-		
+
 		return ResponseEntity.notFound().build();
 	}
-	
+
 	@GetMapping
-	public ResponseEntity<Page<JobDto>> findJobs(@PageableDefault(sort = "id", direction = Direction.ASC) @Parameter(hidden = true) Pageable page,
+	public ResponseEntity<Page<JobDto>> findJobs(
+			@PageableDefault(sort = "id", direction = Direction.ASC) @Parameter(hidden = true) Pageable page,
 			@RequestParam(required = false, defaultValue = "") String knowledges,
 			@RequestParam(required = false, defaultValue = "") String salary,
-			@RequestParam(required = false, defaultValue = "") String title
-			) {
+			@RequestParam(required = false, defaultValue = "") String title) {
 		try {
 			Page<Job> jobs = jobRepository.getJobsByFilter(knowledges, salary, title, page);
 
-			
 			return ResponseEntity.ok(jobs.map(JobDto::new));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.ok(new PageImpl<JobDto>(null));
@@ -106,12 +109,12 @@ public class JobController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 	}
-	
+
 	@GetMapping("/occupations")
 	public Map<String, String> findOccupations() {
 		Map<String, String> occupations = new HashMap<String, String>();
-		
-		for(Occupation occupation : Occupation.values()) {
+
+		for (Occupation occupation : Occupation.values()) {
 			occupations.put(occupation.name(), occupation.toString());
 		}
 
@@ -122,44 +125,37 @@ public class JobController {
 	@GetMapping("/created")
 	public ResponseEntity<Page<JobRecruiterDetailsDto>> getMyCreatedJobs(
 			@PageableDefault(sort = "id", direction = Direction.ASC) @Parameter(hidden = true) Pageable page,
-			@AuthenticationPrincipal User user
-	) {
-		return ResponseEntity.ok(
-				jobRepository.findByCompanyUserId(user.getId(), page)
-					.map(JobRecruiterDetailsDto::new)
-		);
+			@AuthenticationPrincipal User user) {
+		return ResponseEntity
+				.ok(jobRepository.findByCompanyUserId(user.getId(), page).map(JobRecruiterDetailsDto::new));
 	}
-	
+
 	@GetMapping("/knowledge")
-	public List<Knowledge> findKnowledges() {
-		
-		return knowledgeRepository.findAll();
+	public List<KnowledgeDto> findKnowledges() {
+
+		return knowledgeRepository.findAll().stream().map(KnowledgeDto::new).collect(Collectors.toList());
 	}
-	
+
 	@GetMapping("/salaries")
 	public Map<String, String> findSalaryRanges() {
 		Map<String, String> salaries = new HashMap<String, String>();
-		
-		for(SalaryRange salary : SalaryRange.values()) {
+
+		for (SalaryRange salary : SalaryRange.values()) {
 			salaries.put(salary.name(), salary.toString());
 		}
-		
+
 		return salaries;
 	}
-	
+
 	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@PostMapping("/{id}/apply")
 	public ResponseEntity<JobApplicationDto> applyJob(@PathVariable Long id, @AuthenticationPrincipal User authUser) {
 		Optional<Job> optional = jobRepository.findById(id);
-		
+
 		if (optional.isPresent()) {
 			Job job = optional.get();
 			User user = userRepository.findById(authUser.getId()).get();
-			val jobApplication = JobApplication.builder()
-					.job(job)
-					.approved(null)
-					.user(user)
-					.build();
+			val jobApplication = JobApplication.builder().job(job).approved(null).user(user).build();
 
 			final val application = jobApplicationRepository.save(jobApplication);
 
@@ -168,5 +164,21 @@ public class JobController {
 
 		return ResponseEntity.notFound().build();
 	}
-	
+
+	@GetMapping("/knowledge/{id}/contents")
+	public ResponseEntity<List<ContentsDto>> findContentsByKnowledge(@PathVariable Long id) {
+		Optional<Knowledge> optional = knowledgeRepository.findById(id);
+
+		if (optional.isPresent()) {
+			Knowledge knowledge = optional.get();
+
+			List<ContentsDto> contentsDto = knowledge.getContents().stream().map(ContentsDto::new)
+					.collect(Collectors.toList());
+
+			return ResponseEntity.ok(contentsDto);
+		}
+
+		return ResponseEntity.notFound().build();
+	}
+
 }
