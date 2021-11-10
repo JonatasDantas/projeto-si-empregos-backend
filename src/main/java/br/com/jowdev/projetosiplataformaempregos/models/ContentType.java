@@ -1,10 +1,10 @@
 package br.com.jowdev.projetosiplataformaempregos.models;
 
 public enum ContentType {
-	VIDEO,
-	ARTICLE,
+	VÍDEO,
+	ARTIGO,
 	POST,
-	COURSE,
+	CURSO,
 	PLAYLIST,
 	PODCAST,
 }
