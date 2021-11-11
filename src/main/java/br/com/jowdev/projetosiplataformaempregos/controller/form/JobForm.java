@@ -27,6 +27,8 @@ public class JobForm {
     @NotNull
     @NotEmpty
     private String description;
+    
+    private String fullDescription;
 
     private Float salary;
 
@@ -51,6 +53,7 @@ public class JobForm {
         job.setSalary(salary);
         job.setTitle(title);
         job.setKnowledges(knowledges);
+        job.setFullDescription(fullDescription);
         job.setCompany(company.orElseGet(() -> {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "companhia não encontrada com id " + companyId

@@ -24,6 +24,7 @@ public class Job extends BaseEntity {
 	private Long id;
 
 	private String title;
+	@Column(name="description", length=2147483647)
 	private String description;
 	@Lob
 	@Column(name="full_description", length=2147483647)
