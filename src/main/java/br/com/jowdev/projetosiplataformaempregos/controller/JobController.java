@@ -136,6 +136,17 @@ public class JobController {
 		return knowledgeRepository.findAll().stream().map(KnowledgeDto::new).collect(Collectors.toList());
 	}
 
+	@GetMapping("/knowledge/{id}")
+	public ResponseEntity<KnowledgeDto> findKnowledge(@PathVariable("id") Long id) {
+
+		val knowledge = knowledgeRepository.findById(id);
+
+		return knowledge
+				.map(value -> ResponseEntity.ok(new KnowledgeDto(value)))
+				.orElseGet(() -> ResponseEntity.notFound().build());
+
+	}
+
 	@GetMapping("/salaries")
 	public Map<String, String> findSalaryRanges() {
 		Map<String, String> salaries = new HashMap<String, String>();

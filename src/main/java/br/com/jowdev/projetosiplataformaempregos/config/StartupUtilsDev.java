@@ -61,40 +61,22 @@ public class StartupUtilsDev{
 
 		LOGGER.info("Aplicação iniciada");
 		val angularKnowledge = new Knowledge();
-		angularKnowledge.setName("Angular");
-		angularKnowledge.setDescription("Angular é um framework Javascript criado pela google, com o objetivo de gerar Single Page Applications modernas de forma confiável usando a linguagem Typescript");
-
-		List<Contents> angularContents = new ArrayList<>();
-
-		angularContents.add(new Contents(
-				ContentType.PLAYLIST,
-				"Curso Angular 9",
-				"https://www.youtube.com/playlist?list=PLdPPE0hUkt0rPyAkdhHIIquKbwrGUkvw3",
-				angularKnowledge,
-				"Curso completo de Angular 100% gratuito presente no youtube, oferecido por Cod3r Cursos",
-				""));
-
-		angularContents.add(new Contents(
-				ContentType.PODCAST,
-				"Angular vs React – Hipsters #142",
-				"https://hipsters.tech/angular-vs-react-hipsters-142/",
-				angularKnowledge,
-				null,
-				""));
-		
-		angularContents = contentsRepository.saveAll(angularContents);
-		
-		angularKnowledge.setContents(angularContents);
-
+		val htmlCssKnowledge = new Knowledge();
 		val springKnowledge = new Knowledge();
+
 		springKnowledge.setName("Spring Boot");
 		springKnowledge.setDescription("Spring Boot é uma framework de Desenvolvimento backend feito para a Java Virtual Machine, ele provê ferramentas para a construção de aplicações robustas que seguem boas práticas e padrões de projeto como MVC e IoC. ");
+
 		knowledgeRepository.saveAll(
 				Arrays.asList(
 						angularKnowledge,
-						springKnowledge
+						springKnowledge,
+						htmlCssKnowledge
 				)
 		);
+
+		configureAngularKnowledge(angularKnowledge);
+		configureHtmlCssKnowledge(htmlCssKnowledge);
 
 		configureFirstUser(angularKnowledge);
 		configureSecondUser(angularKnowledge);
@@ -174,7 +156,7 @@ public class StartupUtilsDev{
 		newJob.setSalary(5000f);
 
 		val newJob2 = new Job();
-		newJob2.setKnowledges(Arrays.asList(springKnowledge, angularKnowledge));
+		newJob2.setKnowledges(Arrays.asList(springKnowledge, angularKnowledge, htmlCssKnowledge));
 		newJob2.setTitle("Engenheiro TI Spring PL");
 		newJob2.setCompany(company2);
 		newJob2.setDescription("Analista desenvolvedor de Spring experiente em esteiras AWS code pipeline e Terraform");
@@ -232,6 +214,58 @@ public class StartupUtilsDev{
 		
 		experienceRepository.saveAll(Arrays.asList(experience));
 
+	}
+
+	private void configureHtmlCssKnowledge(Knowledge htmlCssKnowledge) {
+		htmlCssKnowledge.setName("HTML e CSS");
+		htmlCssKnowledge.setDescription("HTML e CSS são a base da Web atualmente, este conhecimento é extremamente necessário para desenvolvedores que desejam entrar no mundo do Desenvolvimento Web");
+
+		List<Contents> htmlCssKnowledgeContents = new ArrayList<>();
+
+
+		val hefestCursoHtmlContent = new Contents(
+				ContentType.CURSO,
+				"Curso HTML e CSS - Oficial Hefest",
+				"https://www.youtube.com/watch?v=QEGkO3it09w&list=PLzDroLqiUeBgz5-e9d2FBEBVrk6NzuXqJ",
+				htmlCssKnowledge,
+				"Curso completo de HTML e CSS moderno oferecido gratuitamente pela sua plataforma de empregos e aprendizados Hefest!",
+				""
+		);
+
+		htmlCssKnowledgeContents.addAll(Arrays.asList(
+				hefestCursoHtmlContent
+				));
+
+		htmlCssKnowledgeContents = contentsRepository.saveAll(htmlCssKnowledgeContents);
+
+		htmlCssKnowledge.setContents(htmlCssKnowledgeContents);
+	}
+
+	private void configureAngularKnowledge(Knowledge angularKnowledge) {
+		angularKnowledge.setName("Angular");
+		angularKnowledge.setDescription("Angular é um framework Javascript criado pela google, com o objetivo de gerar Single Page Applications modernas de forma confiável usando a linguagem Typescript");
+
+		List<Contents> angularContents = new ArrayList<>();
+
+		angularContents.add(new Contents(
+				ContentType.CURSO,
+				"Curso Angular 9",
+				"https://www.youtube.com/playlist?list=PLdPPE0hUkt0rPyAkdhHIIquKbwrGUkvw3",
+				angularKnowledge,
+				"Curso completo de Angular 100% gratuito presente no youtube, oferecido por Cod3r Cursos",
+				""));
+
+		angularContents.add(new Contents(
+				ContentType.PODCAST,
+				"Angular vs React – Hipsters #142",
+				"https://hipsters.tech/angular-vs-react-hipsters-142/",
+				angularKnowledge,
+				null,
+				""));
+
+		angularContents = contentsRepository.saveAll(angularContents);
+
+		angularKnowledge.setContents(angularContents);
 	}
 
 	private void configureFirstUser(Knowledge angularKnowledge) {
