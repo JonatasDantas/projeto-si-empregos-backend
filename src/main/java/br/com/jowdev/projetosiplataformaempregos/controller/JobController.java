@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.KnowledgeDetailsDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.KnowledgeDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.job.ContentsDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.job.JobApplicationDto;
@@ -137,12 +138,12 @@ public class JobController {
 	}
 
 	@GetMapping("/knowledge/{id}")
-	public ResponseEntity<KnowledgeDto> findKnowledge(@PathVariable("id") Long id) {
+	public ResponseEntity<KnowledgeDetailsDto> findKnowledge(@PathVariable("id") Long id) {
 
 		val knowledge = knowledgeRepository.findById(id);
 
 		return knowledge
-				.map(value -> ResponseEntity.ok(new KnowledgeDto(value)))
+				.map(value -> ResponseEntity.ok(new KnowledgeDetailsDto(value)))
 				.orElseGet(() -> ResponseEntity.notFound().build());
 
 	}
