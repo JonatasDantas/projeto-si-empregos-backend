@@ -17,6 +17,7 @@ import br.com.jowdev.projetosiplataformaempregos.controller.dto.job.JobApplicati
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.job.JobRecruiterDetailsDto;
 import br.com.jowdev.projetosiplataformaempregos.helper.UserHelper;
 import br.com.jowdev.projetosiplataformaempregos.models.Job.JobApplication;
+import br.com.jowdev.projetosiplataformaempregos.models.Job.JobApplicationId;
 import br.com.jowdev.projetosiplataformaempregos.models.user.User;
 import br.com.jowdev.projetosiplataformaempregos.repository.*;
 import lombok.val;
@@ -167,6 +168,15 @@ public class JobController {
 		if (optional.isPresent()) {
 			Job job = optional.get();
 			User user = userRepository.findById(authUser.getId()).get();
+
+			//Checar se ja existe
+			final val jobApplicationFound = jobApplicationRepository.findByUserIdAndJobId(authUser.getId(), job.getId());
+			if(jobApplicationFound.isPresent()) {
+				jobApplicationRepository.delete(jobApplicationFound.get());
+				return ResponseEntity.ok().build();
+			}
+
+
 			val jobApplication = JobApplication.builder().job(job).approved(null).user(user).build();
 
 			final val application = jobApplicationRepository.save(jobApplication);

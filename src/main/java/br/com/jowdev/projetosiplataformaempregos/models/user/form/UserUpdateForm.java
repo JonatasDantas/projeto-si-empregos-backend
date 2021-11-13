@@ -1,5 +1,6 @@
-package br.com.jowdev.projetosiplataformaempregos.controller.form;
+package br.com.jowdev.projetosiplataformaempregos.models.user.form;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
@@ -8,14 +9,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.jowdev.projetosiplataformaempregos.models.Experience;
+import br.com.jowdev.projetosiplataformaempregos.models.Knowledge;
 import br.com.jowdev.projetosiplataformaempregos.models.user.Certificate;
 import br.com.jowdev.projetosiplataformaempregos.models.user.User;
 import br.com.jowdev.projetosiplataformaempregos.models.user.UserGender;
+import br.com.jowdev.projetosiplataformaempregos.models.user.UserKnowledge;
 import br.com.jowdev.projetosiplataformaempregos.repository.CertificateRepository;
 import br.com.jowdev.projetosiplataformaempregos.repository.ExperienceRepository;
 
+import br.com.jowdev.projetosiplataformaempregos.repository.UserKnowledgeRepository;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.val;
 import org.hibernate.validator.constraints.URL;
 
 @Data
@@ -45,7 +50,10 @@ public class UserUpdateForm {
 	
 	private List<Certificate> certificates;
 
-	public User update(User user, ExperienceRepository experienceRepository, CertificateRepository certificateRepository) {
+	@Valid
+	private List<UserKnowledgeForm> knowledges;
+
+	public User update(User user, ExperienceRepository experienceRepository, CertificateRepository certificateRepository, UserKnowledgeRepository userKnowledgeRepository) {
 		if (name != null)
 			user.setName(name.trim());
 
@@ -68,7 +76,7 @@ public class UserUpdateForm {
 			user.setBiography(biography);
 
 		if (experience != null) {
-			List<Experience> newExperiences = new ArrayList<Experience>();
+			List<Experience> newExperiences = new ArrayList<>();
 			
 			experience.forEach(item -> {
 				System.out.println("item experince: " + item);
@@ -84,6 +92,27 @@ public class UserUpdateForm {
 			});
 			
 			//user.setExperience(newExperiences);
+		}
+
+		if(knowledges != null) {
+
+			// Para cada conhecimento presente no payload, se o usuario não o possuir, salva, senão altera
+			knowledges.forEach(knowledge -> {
+
+				final val userKnowledgeExistent = user.getKnowledges()
+						.stream()
+						.filter(e -> e.getKnowledge().getId().equals(knowledge.knowledgeId))
+						.findFirst();
+
+				if(!userKnowledgeExistent.isPresent()) {
+					knowledge.persist(userKnowledgeRepository, user);
+				} else {
+					userKnowledgeExistent.get().setKnowledgeLevel(knowledge.knowledgeLevel);
+				}
+
+			});
+
+
 		}
 		
 		if (certificates != null) {

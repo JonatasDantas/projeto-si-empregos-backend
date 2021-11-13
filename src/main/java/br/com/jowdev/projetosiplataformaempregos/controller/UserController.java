@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.job.JobApplicationDto;
+import br.com.jowdev.projetosiplataformaempregos.repository.*;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,17 +24,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.CompanyDto;
-import br.com.jowdev.projetosiplataformaempregos.controller.dto.job.JobDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.user.UserDetailsDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.user.UserDto;
 import br.com.jowdev.projetosiplataformaempregos.controller.form.CompanyForm;
-import br.com.jowdev.projetosiplataformaempregos.controller.form.UserUpdateForm;
+import br.com.jowdev.projetosiplataformaempregos.models.user.form.UserUpdateForm;
 import br.com.jowdev.projetosiplataformaempregos.models.Company;
 import br.com.jowdev.projetosiplataformaempregos.models.user.User;
-import br.com.jowdev.projetosiplataformaempregos.repository.CertificateRepository;
-import br.com.jowdev.projetosiplataformaempregos.repository.CompanyRepository;
-import br.com.jowdev.projetosiplataformaempregos.repository.ExperienceRepository;
-import br.com.jowdev.projetosiplataformaempregos.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
@@ -54,6 +50,9 @@ public class UserController {
 	
 	@Autowired
 	private CertificateRepository certificateRepository;
+
+	@Autowired
+	private UserKnowledgeRepository userKnowledgeRepository;
 
 
 	@GetMapping("/me")
@@ -92,7 +91,7 @@ public class UserController {
 		Optional<User> optional = userRepository.findById(id);
 		
 		if (optional.isPresent()) {
-			User user = form.update(optional.get(), experienceRepository, certificateRepository);
+			User user = form.update(optional.get(), experienceRepository, certificateRepository, userKnowledgeRepository);
 			userRepository.save(user);
 			
 			Optional<User> updatedUser = userRepository.findById(id);
