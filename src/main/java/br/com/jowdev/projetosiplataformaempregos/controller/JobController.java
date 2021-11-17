@@ -18,6 +18,7 @@ import br.com.jowdev.projetosiplataformaempregos.controller.dto.job.JobRecruiter
 import br.com.jowdev.projetosiplataformaempregos.helper.UserHelper;
 import br.com.jowdev.projetosiplataformaempregos.models.Job.JobApplication;
 import br.com.jowdev.projetosiplataformaempregos.models.Job.JobApplicationId;
+import br.com.jowdev.projetosiplataformaempregos.models.Job.form.JobApplicationApprovalForm;
 import br.com.jowdev.projetosiplataformaempregos.models.user.User;
 import br.com.jowdev.projetosiplataformaempregos.repository.*;
 import lombok.val;
@@ -31,13 +32,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.job.JobDetailsDto;
@@ -159,6 +154,26 @@ public class JobController {
 
 		return salaries;
 	}
+
+	@PostMapping("/{jobId}/job_applications/{userId}")
+	@Transactional
+	public ResponseEntity<JobApplicationDto> modifyApproval(
+			@PathVariable("jobId") Long jobId,
+			@PathVariable("userId") Long userId,
+			@RequestBody JobApplicationApprovalForm jobApplicationApprovalForm,
+			@AuthenticationPrincipal User user) {
+
+		return jobApplicationRepository.findByUserIdAndJobId(userId, jobId).map(
+				e -> {
+					e.setApproved(jobApplicationApprovalForm.getApproved());
+					return ResponseEntity.ok(new JobApplicationDto(e));
+				}
+		).orElseGet(
+				() -> ResponseEntity.notFound().build()
+		);
+
+	}
+
 
 	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	@PostMapping("/{id}/apply")

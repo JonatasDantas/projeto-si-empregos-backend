@@ -12,4 +12,12 @@ public class UserHelper {
         return user.getRoles().stream().anyMatch(e -> e.getName().toLowerCase(Locale.ROOT).equals("role_recruiter"));
     }
 
+    public boolean isAdmin(User user) {
+        return user.getRoles().stream().anyMatch(e -> e.getName().toLowerCase(Locale.ROOT).equals("role_admin"));
+    }
+
+    public boolean hasJob(User user, Long jobId) {
+        return user.getCompanies().stream().anyMatch(company -> company.getJobs().stream().anyMatch(job -> job.getId().equals(jobId)));
+    }
+
 }
