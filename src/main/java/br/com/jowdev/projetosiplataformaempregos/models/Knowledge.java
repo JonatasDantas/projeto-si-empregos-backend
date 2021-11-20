@@ -21,6 +21,8 @@ public class Knowledge {
 	private String name;
 	private String description;
 
+	private String imageUrl;
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Job> jobs;
 	

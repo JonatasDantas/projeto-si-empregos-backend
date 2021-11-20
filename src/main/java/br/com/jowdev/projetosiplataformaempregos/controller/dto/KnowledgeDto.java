@@ -14,10 +14,12 @@ public class KnowledgeDto {
     private Long id;
     private String name;
     private String description;
+    private String image;
 
     public KnowledgeDto(Knowledge knowledge) {
         this.id = knowledge.getId();
         this.name = knowledge.getName();
         this.description = knowledge.getDescription();
+        this.image = knowledge.getImageUrl();
     }
 }

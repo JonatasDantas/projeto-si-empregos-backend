@@ -243,6 +243,7 @@ public class StartupUtilsDev{
 
 	private void configureAngularKnowledge(Knowledge angularKnowledge) {
 		angularKnowledge.setName("Angular");
+		angularKnowledge.setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/250px-Angular_full_color_logo.svg.png");
 		angularKnowledge.setDescription("Angular é um framework Javascript criado pela google, com o objetivo de gerar Single Page Applications modernas de forma confiável usando a linguagem Typescript");
 
 		List<Contents> angularContents = new ArrayList<>();
