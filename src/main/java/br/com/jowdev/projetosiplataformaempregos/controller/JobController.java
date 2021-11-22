@@ -79,6 +79,18 @@ public class JobController {
 		return ResponseEntity.created(uri).body(new JobDetailsDto(job));
 	}
 
+	@PreAuthorize("hasAnyRole('RECRUITER', 'ADMIN')")
+	@DeleteMapping("{id}")
+	public ResponseEntity<JobDetailsDto> delete(@PathVariable Long id, @AuthenticationPrincipal User user) {
+
+		val job = jobRepository.findById(id);
+		if(job.isPresent() && ( user.isAdmin() || job.get().getCompany().getUser().getId().equals(user.getId()))) {
+			jobRepository.delete(job.get());
+			return ResponseEntity.ok().build();
+		}
+		return ResponseEntity.notFound().build();
+	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<JobDetailsDto> details(@PathVariable Long id) {
 		Optional<Job> optional = jobRepository.findById(id);

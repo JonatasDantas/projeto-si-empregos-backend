@@ -3,6 +3,7 @@ package br.com.jowdev.projetosiplataformaempregos.models.user;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -105,6 +106,14 @@ public class User implements UserDetails {
 	@Transactional
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+
+	public boolean isRecruiter() {
+		return getRoles().stream().anyMatch(e -> e.getName().toLowerCase(Locale.ROOT).equals("role_recruiter"));
+	}
+
+	public boolean isAdmin() {
+		return getRoles().stream().anyMatch(e -> e.getName().toLowerCase(Locale.ROOT).equals("role_admin"));
 	}
 
 	@Override

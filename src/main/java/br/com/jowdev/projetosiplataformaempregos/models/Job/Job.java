@@ -37,7 +37,7 @@ public class Job extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Company company;
 	
-	@OneToMany(mappedBy = "job")
+	@OneToMany(mappedBy = "job", cascade = CascadeType.REMOVE)
 	private List<JobApplication> jobApplications = new ArrayList<>();
 
 }
