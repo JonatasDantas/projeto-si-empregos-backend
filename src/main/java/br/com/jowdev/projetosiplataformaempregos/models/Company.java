@@ -49,7 +49,7 @@ public class Company {
 	private List<Job> jobs = new ArrayList<>();
 
 	public Company(String cnpj, String name, String street, Integer number, String complement, String cep,
-			String city, String state, User user) {
+			String city, String state, User user, String logoUrl) {
 		super();
 		this.cnpj = cnpj;
 		this.name = name;
@@ -60,5 +60,6 @@ public class Company {
 		this.city = city;
 		this.state = state;
 		this.user = user;
+		this.logoUrl = logoUrl;
 	}
 }

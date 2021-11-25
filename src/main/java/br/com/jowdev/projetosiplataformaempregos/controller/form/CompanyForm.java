@@ -8,7 +8,9 @@ import javax.validation.constraints.NotNull;
 import br.com.jowdev.projetosiplataformaempregos.models.Company;
 import br.com.jowdev.projetosiplataformaempregos.models.user.User;
 import br.com.jowdev.projetosiplataformaempregos.repository.UserRepository;
+import lombok.Data;
 
+@Data
 public class CompanyForm {
 
 	@NotNull
@@ -40,75 +42,16 @@ public class CompanyForm {
 	@NotEmpty
 	private String state;
 
-	public String getCnpj() {
-		return cnpj;
-	}
+	@NotNull
+	@NotEmpty
+	private String imageUrl;
 
-	public void setCnpj(String cnpj) {
-		this.cnpj = cnpj;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getStreet() {
-		return street;
-	}
-
-	public void setStreet(String street) {
-		this.street = street;
-	}
-
-	public Integer getNumber() {
-		return number;
-	}
-
-	public void setNumber(Integer number) {
-		this.number = number;
-	}
-
-	public String getComplement() {
-		return complement;
-	}
-
-	public void setComplement(String complement) {
-		this.complement = complement;
-	}
-
-	public String getCep() {
-		return cep;
-	}
-
-	public void setCep(String cep) {
-		this.cep = cep;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
 
 	public Company convert(Long userId, UserRepository userRepository) {
 		Optional<User> user = userRepository.findById(userId);
 
 		if (user.isPresent()) {
-			return new Company(cnpj, name, street, number, complement, cep, city, state, user.get());
+			return new Company(cnpj, name, street, number, complement, cep, city, state, user.get(), imageUrl);
 		}
 
 		return null;
