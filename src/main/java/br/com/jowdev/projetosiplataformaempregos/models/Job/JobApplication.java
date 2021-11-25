@@ -27,4 +27,5 @@ public class JobApplication extends BaseEntity {
     private Job job;
 
     private Boolean approved;
+    private String message;
 }

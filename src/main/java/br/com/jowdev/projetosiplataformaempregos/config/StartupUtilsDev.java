@@ -63,15 +63,28 @@ public class StartupUtilsDev{
 		val angularKnowledge = new Knowledge();
 		val htmlCssKnowledge = new Knowledge();
 		val springKnowledge = new Knowledge();
+		val awsKnowledge = new Knowledge();
+		val reactKnowledge = new Knowledge();
+
+		awsKnowledge.setImageUrl("https://cdn2.downdetector.com/static/uploads/logo/aws-logo-icon-PNG-Transparent-Background_3.png");
+		awsKnowledge.setDescription("AWS (Amazon Web Services) é o maior Cloud Provider do mundo, com centenas de serviços, provê tudo que é necessário para que você construa aplicações robustas sem precisar se preocupar com infraestrutura.");
+		awsKnowledge.setName("AWS");
+
+		reactKnowledge.setName("React");
+		reactKnowledge.setDescription("React o framework baseado em javascript mais popular do mundo, criado pelo Facebook oferece a capacidade de criar aplicações web utilizando Javascript ou Typescript com a sintaxe JSX");
+		reactKnowledge.setImageUrl("https://miro.medium.com/max/1400/0*k9CL2yoHU6ELTkmi.png");
 
 		springKnowledge.setName("Spring Boot");
+		springKnowledge.setImageUrl("https://devkico.itexto.com.br/wp-content/uploads/2014/08/spring-boot-project-logo.png");
 		springKnowledge.setDescription("Spring Boot é uma framework de Desenvolvimento backend feito para a Java Virtual Machine, ele provê ferramentas para a construção de aplicações robustas que seguem boas práticas e padrões de projeto como MVC e IoC. ");
 
 		knowledgeRepository.saveAll(
 				Arrays.asList(
 						angularKnowledge,
 						springKnowledge,
-						htmlCssKnowledge
+						htmlCssKnowledge,
+						awsKnowledge,
+						reactKnowledge
 				)
 		);
 
@@ -218,6 +231,8 @@ public class StartupUtilsDev{
 
 	private void configureHtmlCssKnowledge(Knowledge htmlCssKnowledge) {
 		htmlCssKnowledge.setName("HTML e CSS");
+		htmlCssKnowledge.setImageUrl("https://cdn-icons-png.flaticon.com/512/174/174854.png");
+
 		htmlCssKnowledge.setDescription("HTML e CSS são a base da Web atualmente, este conhecimento é extremamente necessário para desenvolvedores que desejam entrar no mundo do Desenvolvimento Web");
 
 		List<Contents> htmlCssKnowledgeContents = new ArrayList<>();
@@ -229,7 +244,8 @@ public class StartupUtilsDev{
 				"https://www.youtube.com/watch?v=QEGkO3it09w&list=PLzDroLqiUeBgz5-e9d2FBEBVrk6NzuXqJ",
 				htmlCssKnowledge,
 				"Curso completo de HTML e CSS moderno oferecido gratuitamente pela sua plataforma de empregos e aprendizados Hefest!",
-				""
+				"/assets/Logo-Reduzido.png",
+				KnowledgeLevel.INICIANTE
 		);
 
 		htmlCssKnowledgeContents.addAll(Arrays.asList(
@@ -254,7 +270,8 @@ public class StartupUtilsDev{
 				"https://www.youtube.com/playlist?list=PLdPPE0hUkt0rPyAkdhHIIquKbwrGUkvw3",
 				angularKnowledge,
 				"Curso completo de Angular 100% gratuito presente no youtube, oferecido por Cod3r Cursos",
-				""));
+				"",
+				KnowledgeLevel.INICIANTE));
 
 		angularContents.add(new Contents(
 				ContentType.PODCAST,
@@ -262,7 +279,8 @@ public class StartupUtilsDev{
 				"https://hipsters.tech/angular-vs-react-hipsters-142/",
 				angularKnowledge,
 				null,
-				""));
+				"",
+				KnowledgeLevel.MÉDIO));
 
 		angularContents = contentsRepository.saveAll(angularContents);
 

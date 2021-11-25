@@ -11,6 +11,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import br.com.jowdev.projetosiplataformaempregos.models.Job.Job;
+import br.com.jowdev.projetosiplataformaempregos.models.user.KnowledgeLevel;
 import br.com.jowdev.projetosiplataformaempregos.models.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,11 +33,12 @@ public class Contents {
 	private String url;
 	private String imageUrl;
 	private String description;
+	private KnowledgeLevel knowledgeLevel;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Knowledge knowledge;
 	
-	public Contents(ContentType contentType, String title, String url, Knowledge knowledge, String description, String imageUrl) {
+	public Contents(ContentType contentType, String title, String url, Knowledge knowledge, String description, String imageUrl, KnowledgeLevel knowledgeLevel) {
 		super();
 		this.contentType = contentType;
 		this.title = title;
@@ -44,5 +46,7 @@ public class Contents {
 		this.knowledge = knowledge;
 		this.description = description;
 		this.imageUrl = imageUrl;
+		this.knowledgeLevel = knowledgeLevel;
 	}
+
 }

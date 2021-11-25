@@ -21,6 +21,8 @@ public class JobRecruiterDetailsDto {
     private String title;
     private String description;
     private String fullDescription;
+    private String companyName;
+    private String companyLogo;
     private Float salary;
     private List<KnowledgeDto> knowledges;
     private Long companyId;
@@ -40,6 +42,9 @@ public class JobRecruiterDetailsDto {
                             .map(JobApplicationDto::new)
                             .collect(Collectors.toList());
         this.createdAt = job.getCreatedAt();
+        this.companyName = job.getCompany().getName();
+        this.companyLogo = job.getCompany().getLogoUrl();
+
     }
 
 }

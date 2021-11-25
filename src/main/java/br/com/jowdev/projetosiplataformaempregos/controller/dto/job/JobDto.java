@@ -22,6 +22,7 @@ public class JobDto {
 	private List<KnowledgeDto> knowledges;
 	private String city;
 	private String companyLogo;
+	private String companyName;
 	private LocalDateTime createdAt;
 
 	public JobDto(Job job) {
@@ -33,6 +34,7 @@ public class JobDto {
 		this.knowledges = job.getKnowledges().stream().map(KnowledgeDto::new).collect(Collectors.toList());
 		this.city = job.getCompany().getCity();
 		this.companyLogo = job.getCompany().getLogoUrl();
+		this.companyName = job.getCompany().getName();
 		this.createdAt = job.getCreatedAt();
 	}
 }

@@ -12,6 +12,7 @@ public class JobApplicationDto {
     private UserDto user;
     private JobDto job;
     private Boolean approved;
+    private String message;
     private LocalDateTime updatedAt;
     private LocalDateTime createdAt;
 
@@ -19,6 +20,7 @@ public class JobApplicationDto {
         this.user = new UserDto(app.getUser());
         this.job = new JobDto(app.getJob());
         this.approved = app.getApproved();
+        this.message = app.getMessage();
         this.createdAt = app.getCreatedAt();
         this.updatedAt = app.getUpdatedAt();
     }
