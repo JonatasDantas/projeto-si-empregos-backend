@@ -17,6 +17,7 @@ public class UserDto {
 	private String email;
 	private String cpf;
 	private String phone;
+	private String profilePic;
 	private List<Role> roles;
 	private boolean emailVerified;
 	private List<UserKnowledgeDto> knowledges;
@@ -29,6 +30,7 @@ public class UserDto {
 		this.name = user.getName();
 		this.email = user.getEmail();
 		this.cpf = user.getCpf();
+		this.profilePic = user.getProfilePic();
 		this.phone = user.getPhone();
 		this.emailVerified = user.isEmailVerified();
 		this.setRoles(user.getRoles());

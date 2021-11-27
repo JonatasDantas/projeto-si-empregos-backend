@@ -1,6 +1,8 @@
 package br.com.jowdev.projetosiplataformaempregos.repository;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -23,19 +25,14 @@ public class JobRepositoryCustomImpl implements JobRepositoryCustom {
     private EntityManager em;
 	
 	@Override
-	public Page<Job> getJobsByFilter(String knowledge, String salary, String title, Pageable pageable) {
+	public Page<Job> getJobsByFilter(Long[] knowledges, String salary, String title, Pageable pageable) {
 
     	CriteriaBuilder builder = em.getCriteriaBuilder();
     	CriteriaQuery<Job> query = builder.createQuery(Job.class);
     	Root<Job> root = query.from(Job.class);
     	
     	Predicate conjunction = builder.conjunction();
-    	
-    	if (!knowledge.isEmpty()) {
-    		
-    		Predicate knowledgeEquals = builder.equal(root.get("knowledges"), knowledge);
-    		conjunction = builder.and(knowledgeEquals);
-    	}
+
 
     	if (!salary.isEmpty()) {
     		SalaryRange salaryEnum = SalaryRange.valueOf(salary);
@@ -51,6 +48,10 @@ public class JobRepositoryCustomImpl implements JobRepositoryCustom {
     	
     	TypedQuery<Job> typedQuery = em.createQuery(query.where(conjunction));
     	List<Job> jobs = typedQuery.getResultList();
+
+		if (knowledges.length > 0) {
+			jobs = jobs.stream().filter(j -> j.getKnowledges().stream().anyMatch(e -> Arrays.stream(knowledges).anyMatch(know -> know.equals(e.getId())))).collect(Collectors.toList());
+		}
     	
     	int start = (int) pageable.getOffset();
     	int end = (start + pageable.getPageSize()) > jobs.size() ? jobs.size() : (start + pageable.getPageSize());

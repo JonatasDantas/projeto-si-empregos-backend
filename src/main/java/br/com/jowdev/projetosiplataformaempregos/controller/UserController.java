@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import br.com.jowdev.projetosiplataformaempregos.controller.dto.job.JobApplicationDto;
+import br.com.jowdev.projetosiplataformaempregos.controller.dto.user.UserPublicDto;
 import br.com.jowdev.projetosiplataformaempregos.repository.*;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +79,17 @@ public class UserController {
 
 		if (optional.isPresent()) {
 			return ResponseEntity.ok(new UserDetailsDto(optional.get()));
+		}
+
+		return ResponseEntity.notFound().build();
+	}
+
+	@GetMapping("/{id}/public")
+	public ResponseEntity<UserPublicDto> publicUserDetails(@PathVariable Long id, @AuthenticationPrincipal @Parameter(hidden = true) User authUser) {
+		Optional<User> optional = userRepository.findById(id);
+
+		if (optional.isPresent()) {
+			return ResponseEntity.ok(new UserPublicDto(optional.get()));
 		}
 
 		return ResponseEntity.notFound().build();

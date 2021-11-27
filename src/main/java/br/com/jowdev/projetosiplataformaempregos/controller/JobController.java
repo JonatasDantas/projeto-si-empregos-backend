@@ -105,7 +105,7 @@ public class JobController {
 	@GetMapping
 	public ResponseEntity<Page<JobDto>> findJobs(
 			@PageableDefault(sort = "id", direction = Direction.ASC) @Parameter(hidden = true) Pageable page,
-			@RequestParam(required = false, defaultValue = "") String knowledges,
+			@RequestParam(required = false, defaultValue = "") Long[] knowledges,
 			@RequestParam(required = false, defaultValue = "") String salary,
 			@RequestParam(required = false, defaultValue = "") String title) {
 		try {
